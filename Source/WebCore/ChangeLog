@@ -1,3 +1,20 @@
+2016-02-24  Carlos Garcia Campos  <cgarcia@igalia.com>
+
+        Unreviewed. Fix GObject DOM bindings API break after r196998.
+
+        webkit_dom_node_clone_node can now raise exceptions, so rename it
+        as webkit_dom_node_clone_node_with_error and deprecate the old one
+        that calls the new one ignoring the error.
+
+        * bindings/gobject/WebKitDOMDeprecated.cpp:
+        (webkit_dom_node_clone_node):
+        * bindings/gobject/WebKitDOMDeprecated.h:
+        * bindings/gobject/WebKitDOMDeprecated.symbols:
+        * bindings/gobject/webkitdom.symbols:
+        * bindings/scripts/CodeGeneratorGObject.pm:
+        (FunctionUsedToNotRaiseException):
+        (GenerateFunction):
+
 2016-02-24  Chris Dumez  <cdumez@apple.com>
 
         Drop [TreatReturnedNullStringAs=Null] WebKit-specific IDL attribute
