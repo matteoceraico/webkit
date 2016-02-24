@@ -47,5 +47,4 @@ interface FetchHeaders {
     [Custom] any values();
 
     [Private, RaisesException, ImplementedAs=append] void appendFromJS(DOMString name, DOMString value);
-    [Private, RaisesException] void initializeWith(FetchHeaders headers);
 };
