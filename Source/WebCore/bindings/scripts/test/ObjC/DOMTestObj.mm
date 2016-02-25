@@ -969,6 +969,24 @@
     return IMPL->unforgeableMethod();
 }
 
+- (NSString *)nullableStringMethod
+{
+    WebCore::JSMainThreadNullState state;
+    return IMPL->nullableStringMethod();
+}
+
+- (NSString *)nullableStringStaticMethod
+{
+    WebCore::JSMainThreadNullState state;
+    return IMPL->nullableStringStaticMethod();
+}
+
+- (NSString *)nullableStringSpecialMethod:(unsigned)index
+{
+    WebCore::JSMainThreadNullState state;
+    return IMPL->nullableStringSpecialMethod(index);
+}
+
 - (void)methodWithEnumArg:(DOMTestEnumType *)enumArg
 {
     WebCore::JSMainThreadNullState state;
@@ -1253,12 +1271,6 @@
 {
     WebCore::JSMainThreadNullState state;
     IMPL->convert1(core(value));
-}
-
-- (void)convert2:(DOMTestNode *)value
-{
-    WebCore::JSMainThreadNullState state;
-    IMPL->convert2(core(value));
 }
 
 - (void)convert4:(DOMTestNode *)value
