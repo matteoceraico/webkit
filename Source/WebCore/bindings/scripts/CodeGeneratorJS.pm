@@ -4290,12 +4290,7 @@ sub NativeToJSValue
 
     if ($codeGenerator->IsStringType($type)) {
         AddToImplIncludes("URL.h", $conditional);
-        my $conv = $signature->extendedAttributes->{"TreatReturnedNullStringAs"};
-        if (defined $conv) {
-            return "jsStringOrUndefined(state, $value)" if $conv eq "Undefined";
-
-            die "Unknown value for TreatReturnedNullStringAs extended attribute";
-        }
+        return "jsStringOrNull(state, $value)" if $signature->isNullable;
         AddToImplIncludes("<runtime/JSString.h>", $conditional);
         return "jsStringWithCache(state, $value)";
     }
