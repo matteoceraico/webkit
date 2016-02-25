@@ -429,6 +429,11 @@ void JSObject::putInlineSlow(ExecState* exec, PropertyName propertyName, JSValue
                 }
             }
         }
+        if (obj->type() == ProxyObjectType) {
+            ProxyObject* proxy = jsCast<ProxyObject*>(obj);
+            proxy->ProxyObject::put(proxy, exec, propertyName, value, slot);
+            return;
+        }
         JSValue prototype = obj->prototype();
         if (prototype.isNull())
             break;
@@ -1927,6 +1932,12 @@ bool JSObject::attemptToInterceptPutByIndexOnHoleForPrototype(ExecState* exec, J
                 iter->value.put(exec, thisValue, storage->m_sparseMap.get(), value, shouldThrow);
                 return true;
             }
+        }
+
+        if (current->type() == ProxyObjectType) {
+            ProxyObject* proxy = jsCast<ProxyObject*>(current);
+            proxy->putByIndexCommon(exec, thisValue, i, value, shouldThrow);
+            return true;
         }
         
         JSValue prototypeValue = current->prototype();
