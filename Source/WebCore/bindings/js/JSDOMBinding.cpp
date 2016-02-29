@@ -108,6 +108,13 @@ String valueToStringWithNullCheck(ExecState* exec, JSValue value)
     return value.toString(exec)->value(exec);
 }
 
+String valueToStringTreatingNullAsEmptyString(ExecState* exec, JSValue value)
+{
+    if (value.isNull())
+        return emptyString();
+    return value.toString(exec)->value(exec);
+}
+
 String valueToStringWithUndefinedOrNullCheck(ExecState* exec, JSValue value)
 {
     if (value.isUndefinedOrNull())

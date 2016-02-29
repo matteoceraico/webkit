@@ -78,7 +78,7 @@ void HTMLScriptElement::finishedInsertingSubtree()
     ScriptElement::finishedInsertingSubtree();
 }
 
-void HTMLScriptElement::setText(const String &value)
+void HTMLScriptElement::setText(const String& value)
 {
     Ref<HTMLScriptElement> protectFromMutationEvents(*this);
 
@@ -90,7 +90,7 @@ void HTMLScriptElement::setText(const String &value)
     if (hasChildNodes())
         removeChildren();
 
-    appendChild(document().createTextNode(value.impl()), IGNORE_EXCEPTION);
+    appendChild(document().createTextNode(value), IGNORE_EXCEPTION);
 }
 
 void HTMLScriptElement::setAsync(bool async)
