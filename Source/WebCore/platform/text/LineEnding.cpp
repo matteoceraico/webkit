@@ -86,7 +86,7 @@ public:
         return m_buffer.data() + oldSize;
     }
 
-    virtual void copy(const CString& source)
+    void copy(const CString& source) override
     {
         m_buffer.append(source.data(), source.length());
     }
