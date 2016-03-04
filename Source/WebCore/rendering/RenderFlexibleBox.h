@@ -44,9 +44,9 @@ public:
 
     const char* renderName() const override;
 
-    bool avoidsFloats() const override final { return true; }
-    bool canDropAnonymousBlockChild() const override final { return false; }
-    void layoutBlock(bool relayoutChildren, LayoutUnit pageLogicalHeight = 0) override final;
+    bool avoidsFloats() const final { return true; }
+    bool canDropAnonymousBlockChild() const final { return false; }
+    void layoutBlock(bool relayoutChildren, LayoutUnit pageLogicalHeight = 0) final;
 
     int baselinePosition(FontBaseline, bool firstLine, LineDirectionMode, LinePositionMode = PositionOnContainingLine) const override;
     Optional<int> firstLineBaseline() const override;

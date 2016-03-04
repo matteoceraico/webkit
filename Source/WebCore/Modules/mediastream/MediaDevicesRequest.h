@@ -66,7 +66,7 @@ private:
     void didCompleteRequest(const TrackSourceInfoVector&) final;
 
     // ContextDestructionObserver
-    void contextDestroyed() override final;
+    void contextDestroyed() final;
 
     // UserMediaPermissionCheckClient
     void didCompleteCheck(bool) override final;

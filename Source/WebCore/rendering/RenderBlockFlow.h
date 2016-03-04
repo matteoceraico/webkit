@@ -77,10 +77,10 @@ protected:
     void layoutInlineChildren(bool relayoutChildren, LayoutUnit& repaintLogicalTop, LayoutUnit& repaintLogicalBottom);
 
     // RenderBlockFlows override these methods, since they are the only class that supports margin collapsing.
-    LayoutUnit collapsedMarginBefore() const override final { return maxPositiveMarginBefore() - maxNegativeMarginBefore(); }
-    LayoutUnit collapsedMarginAfter() const override final { return maxPositiveMarginAfter() - maxNegativeMarginAfter(); }
+    LayoutUnit collapsedMarginBefore() const final { return maxPositiveMarginBefore() - maxNegativeMarginBefore(); }
+    LayoutUnit collapsedMarginAfter() const final { return maxPositiveMarginAfter() - maxNegativeMarginAfter(); }
 
-    void dirtyLinesFromChangedChild(RenderObject& child) override final { lineBoxes().dirtyLinesFromChangedChild(*this, child); }
+    void dirtyLinesFromChangedChild(RenderObject& child) final { lineBoxes().dirtyLinesFromChangedChild(*this, child); }
     void updateLogicalHeight() override;
 
     void paintColumnRules(PaintInfo&, const LayoutPoint&) override;
@@ -258,7 +258,7 @@ public:
     void handleAfterSideOfBlock(LayoutUnit top, LayoutUnit bottom, MarginInfo&);
     void setCollapsedBottomMargin(const MarginInfo&);
 
-    bool childrenPreventSelfCollapsing() const override final;
+    bool childrenPreventSelfCollapsing() const final;
 
     bool shouldBreakAtLineToAvoidWidow() const { return hasRareBlockFlowData() && rareBlockFlowData()->m_lineBreakToAvoidWidow >= 0; }
     void clearShouldBreakAtLineToAvoidWidow() const;
@@ -484,7 +484,7 @@ private:
     void paintFloats(PaintInfo&, const LayoutPoint&, bool preservePhase = false) override;
 
     void moveAllChildrenIncludingFloatsTo(RenderBlock& toBlock, bool fullRemoveInsert) override;
-    void repaintOverhangingFloats(bool paintAllDescendants) override final;
+    void repaintOverhangingFloats(bool paintAllDescendants) final;
     void clipOutFloatingObjects(RenderBlock&, const PaintInfo*, const LayoutPoint&, const LayoutSize&) override;
 
     FloatingObject* insertFloatingObject(RenderBox&);
@@ -601,7 +601,7 @@ private:
     int m_widthForTextAutosizing;
     unsigned m_lineCountForTextAutosizing : 2;
 #endif
-    void setSelectionState(SelectionState) override final;
+    void setSelectionState(SelectionState) final;
 
     void removeInlineBox(BidiRun&, const RootInlineBox&) const;
 
