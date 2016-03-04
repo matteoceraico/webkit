@@ -67,7 +67,7 @@ private:
     void incrementActiveCount();
     void decrementActiveCount();
 
-    virtual void stateChanged(CSSFontFace&, CSSFontFace::Status oldState, CSSFontFace::Status newState) override;
+    void stateChanged(CSSFontFace&, CSSFontFace::Status oldState, CSSFontFace::Status newState) override;
 
     Vector<Ref<CSSFontFace>> m_faces;
     Status m_status { Status::Loaded };

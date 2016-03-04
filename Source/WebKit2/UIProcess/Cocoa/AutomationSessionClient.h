@@ -43,7 +43,7 @@ public:
 
 private:
     // From API::AutomationSessionClient
-    virtual void didRequestNewWindow(WebKit::WebProcessPool*, WebKit::WebAutomationSession*) override;
+    void didRequestNewWindow(WebKit::WebProcessPool*, WebKit::WebAutomationSession*) override;
 
     WeakObjCPtr<id <_WKAutomationSessionDelegate>> m_delegate;
 

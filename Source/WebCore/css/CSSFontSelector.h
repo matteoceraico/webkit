@@ -56,12 +56,12 @@ public:
     }
     virtual ~CSSFontSelector();
     
-    virtual unsigned version() const override { return m_version; }
-    virtual unsigned uniqueId() const override { return m_uniqueId; }
+    unsigned version() const override { return m_version; }
+    unsigned uniqueId() const override { return m_uniqueId; }
 
-    virtual FontRanges fontRangesForFamily(const FontDescription&, const AtomicString&) override;
-    virtual size_t fallbackFontCount() override;
-    virtual RefPtr<Font> fallbackFontAt(const FontDescription&, size_t) override;
+    FontRanges fontRangesForFamily(const FontDescription&, const AtomicString&) override;
+    size_t fallbackFontCount() override;
+    RefPtr<Font> fallbackFontAt(const FontDescription&, size_t) override;
     CSSSegmentedFontFace* getFontFace(const FontDescription&, const AtomicString& family);
 
     void clearDocument();
@@ -70,12 +70,12 @@ public:
     void addFontFaceRule(const StyleRuleFontFace&, bool isInitiatingElementInUserAgentShadowTree);
 
     void fontLoaded();
-    virtual void fontCacheInvalidated() override;
+    void fontCacheInvalidated() override;
 
     bool isEmpty() const;
 
-    virtual void registerForInvalidationCallbacks(FontSelectorClient&) override;
-    virtual void unregisterForInvalidationCallbacks(FontSelectorClient&) override;
+    void registerForInvalidationCallbacks(FontSelectorClient&) override;
+    void unregisterForInvalidationCallbacks(FontSelectorClient&) override;
 
     Document* document() const { return m_document; }
 

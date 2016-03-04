@@ -375,8 +375,8 @@ private:
 
     // IPC::MessageReceiver.
     // Implemented in generated WebProcessPoolMessageReceiver.cpp
-    virtual void didReceiveMessage(IPC::Connection&, IPC::MessageDecoder&) override;
-    virtual void didReceiveSyncMessage(IPC::Connection&, IPC::MessageDecoder&, std::unique_ptr<IPC::MessageEncoder>&) override;
+    void didReceiveMessage(IPC::Connection&, IPC::MessageDecoder&) override;
+    void didReceiveSyncMessage(IPC::Connection&, IPC::MessageDecoder&, std::unique_ptr<IPC::MessageEncoder>&) override;
 
     static void languageChanged(void* context);
     void languageChanged();
@@ -406,7 +406,7 @@ private:
 
 #if ENABLE(NETSCAPE_PLUGIN_API)
     // PluginInfoStoreClient:
-    virtual void pluginInfoStoreDidLoadPlugins(PluginInfoStore*) override;
+    void pluginInfoStoreDidLoadPlugins(PluginInfoStore*) override;
 #endif
 
     Ref<API::ProcessPoolConfiguration> m_configuration;

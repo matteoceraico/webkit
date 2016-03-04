@@ -94,22 +94,22 @@ public:
     struct SynchronousLoadData;
 
     // NetworkLoadClient.
-    virtual void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
-    virtual void canAuthenticateAgainstProtectionSpaceAsync(const WebCore::ProtectionSpace&) override;
-    virtual bool isSynchronous() const override;
-    virtual void willSendRedirectedRequest(const WebCore::ResourceRequest&, const WebCore::ResourceRequest& redirectRequest, const WebCore::ResourceResponse& redirectResponse) override;
-    virtual ShouldContinueDidReceiveResponse didReceiveResponse(const WebCore::ResourceResponse&) override;
-    virtual void didReceiveBuffer(RefPtr<WebCore::SharedBuffer>&&, int reportedEncodedDataLength) override;
-    virtual void didFinishLoading(double finishTime) override;
-    virtual void didFailLoading(const WebCore::ResourceError&) override;
-    virtual void didConvertToDownload() override;
+    void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
+    void canAuthenticateAgainstProtectionSpaceAsync(const WebCore::ProtectionSpace&) override;
+    bool isSynchronous() const override;
+    void willSendRedirectedRequest(const WebCore::ResourceRequest&, const WebCore::ResourceRequest& redirectRequest, const WebCore::ResourceResponse& redirectResponse) override;
+    ShouldContinueDidReceiveResponse didReceiveResponse(const WebCore::ResourceResponse&) override;
+    void didReceiveBuffer(RefPtr<WebCore::SharedBuffer>&&, int reportedEncodedDataLength) override;
+    void didFinishLoading(double finishTime) override;
+    void didFailLoading(const WebCore::ResourceError&) override;
+    void didConvertToDownload() override;
 
 private:
     NetworkResourceLoader(const NetworkResourceLoadParameters&, NetworkConnectionToWebProcess&, RefPtr<Messages::NetworkConnectionToWebProcess::PerformSynchronousLoad::DelayedReply>&&);
 
     // IPC::MessageSender
-    virtual IPC::Connection* messageSenderConnection() override;
-    virtual uint64_t messageSenderDestinationID() override { return m_parameters.identifier; }
+    IPC::Connection* messageSenderConnection() override;
+    uint64_t messageSenderDestinationID() override { return m_parameters.identifier; }
 
 #if ENABLE(NETWORK_CACHE)
     bool canUseCache(const WebCore::ResourceRequest&) const;

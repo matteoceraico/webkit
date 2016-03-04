@@ -52,7 +52,7 @@ public:
     FontRanges fontRanges(const FontDescription&);
 
 private:
-    virtual void fontLoaded(CSSFontFace&) override;
+    void fontLoaded(CSSFontFace&) override;
 
     CSSFontSelector& m_fontSelector;
     HashMap<FontDescriptionKey, FontRanges, FontDescriptionKeyHash, WTF::SimpleClassHashTraits<FontDescriptionKey>> m_cache;

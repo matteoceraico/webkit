@@ -1058,7 +1058,7 @@ public:
     ArrayPrototypeAdaptiveInferredPropertyWatchpoint(const ObjectPropertyCondition&, ArrayPrototype*);
 
 private:
-    virtual void handleFire(const FireDetail&) override;
+    void handleFire(const FireDetail&) override;
 
     ArrayPrototype* m_arrayPrototype;
 };

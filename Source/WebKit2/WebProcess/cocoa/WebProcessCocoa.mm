@@ -302,7 +302,7 @@ RefPtr<ObjCObjectGraph> WebProcess::transformHandlesToObjects(ObjCObjectGraph& o
         {
         }
 
-        virtual bool shouldTransformObject(id object) const override
+        bool shouldTransformObject(id object) const override
         {
 #if WK_API_ENABLED
             if (dynamic_objc_cast<WKBrowsingContextHandle>(object))
@@ -314,7 +314,7 @@ RefPtr<ObjCObjectGraph> WebProcess::transformHandlesToObjects(ObjCObjectGraph& o
             return false;
         }
 
-        virtual RetainPtr<id> transformObject(id object) const override
+        RetainPtr<id> transformObject(id object) const override
         {
 #if WK_API_ENABLED
             if (auto* handle = dynamic_objc_cast<WKBrowsingContextHandle>(object)) {
@@ -339,7 +339,7 @@ RefPtr<ObjCObjectGraph> WebProcess::transformHandlesToObjects(ObjCObjectGraph& o
 RefPtr<ObjCObjectGraph> WebProcess::transformObjectsToHandles(ObjCObjectGraph& objectGraph)
 {
     struct Transformer final : ObjCObjectGraph::Transformer {
-        virtual bool shouldTransformObject(id object) const override
+        bool shouldTransformObject(id object) const override
         {
 #if WK_API_ENABLED
             if (dynamic_objc_cast<WKWebProcessPlugInBrowserContextController>(object))
@@ -352,7 +352,7 @@ RefPtr<ObjCObjectGraph> WebProcess::transformObjectsToHandles(ObjCObjectGraph& o
             return false;
         }
 
-        virtual RetainPtr<id> transformObject(id object) const override
+        RetainPtr<id> transformObject(id object) const override
         {
 #if WK_API_ENABLED
             if (auto* controller = dynamic_objc_cast<WKWebProcessPlugInBrowserContextController>(object))

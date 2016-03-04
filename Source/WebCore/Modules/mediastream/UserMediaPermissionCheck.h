@@ -63,7 +63,7 @@ private:
     UserMediaPermissionCheck(ScriptExecutionContext&, UserMediaPermissionCheckClient&);
 
     // ContextDestructionObserver
-    virtual void contextDestroyed() override final;
+    void contextDestroyed() override final;
 
     UserMediaPermissionCheckClient* m_client;
     bool m_hasPersistentPermission { false };
