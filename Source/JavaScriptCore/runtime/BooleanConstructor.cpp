@@ -58,7 +58,7 @@ static EncodedJSValue JSC_HOST_CALL constructWithBooleanConstructor(ExecState* e
 ConstructType BooleanConstructor::getConstructData(JSCell*, ConstructData& constructData)
 {
     constructData.native.function = constructWithBooleanConstructor;
-    return ConstructTypeHost;
+    return ConstructType::Host;
 }
 
 // ECMA 15.6.1
@@ -70,7 +70,7 @@ static EncodedJSValue JSC_HOST_CALL callBooleanConstructor(ExecState* exec)
 CallType BooleanConstructor::getCallData(JSCell*, CallData& callData)
 {
     callData.native.function = callBooleanConstructor;
-    return CallTypeHost;
+    return CallType::Host;
 }
 
 JSObject* constructBooleanFromImmediateBoolean(ExecState* exec, JSGlobalObject* globalObject, JSValue immediateBooleanValue)

@@ -134,7 +134,7 @@ static EncodedJSValue JSC_HOST_CALL constructWithStringConstructor(ExecState* ex
 ConstructType StringConstructor::getConstructData(JSCell*, ConstructData& constructData)
 {
     constructData.native.function = constructWithStringConstructor;
-    return ConstructTypeHost;
+    return ConstructType::Host;
 }
 
 JSCell* stringConstructor(ExecState* exec, JSValue argument)
@@ -154,7 +154,7 @@ static EncodedJSValue JSC_HOST_CALL callStringConstructor(ExecState* exec)
 CallType StringConstructor::getCallData(JSCell*, CallData& callData)
 {
     callData.native.function = callStringConstructor;
-    return CallTypeHost;
+    return CallType::Host;
 }
 
 } // namespace JSC

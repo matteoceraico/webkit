@@ -736,7 +736,7 @@ void callFunctionWithCurrentArguments(JSC::ExecState& state, JSC::JSObject& this
 {
     JSC::CallData callData;
     JSC::CallType callType = JSC::getCallData(&function, callData);
-    ASSERT(callType != CallTypeNone);
+    ASSERT(callType != CallType::None);
 
     JSC::MarkedArgumentBuffer arguments;
     for (unsigned i = 0; i < state.argumentCount(); ++i)
@@ -761,7 +761,7 @@ static EncodedJSValue JSC_HOST_CALL callThrowTypeError(ExecState* exec)
 CallType DOMConstructorObject::getCallData(JSCell*, CallData& callData)
 {
     callData.native.function = callThrowTypeError;
-    return CallTypeHost;
+    return CallType::Host;
 }
 
 } // namespace WebCore

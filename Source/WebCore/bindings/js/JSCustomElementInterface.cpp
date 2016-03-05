@@ -76,7 +76,7 @@ RefPtr<Element> JSCustomElementInterface::constructElement(const AtomicString& t
 
     ConstructData constructData;
     ConstructType constructType = m_constructor->methodTable()->getConstructData(m_constructor.get(), constructData);
-    if (constructType == ConstructTypeNone) {
+    if (constructType == ConstructType::None) {
         ASSERT_NOT_REACHED();
         return nullptr;
     }
@@ -124,7 +124,7 @@ void JSCustomElementInterface::attributeChanged(Element& element, const Qualifie
     JSValue callback = jsElement->get(state, attributeChanged);
     CallData callData;
     CallType callType = getCallData(callback, callData);
-    if (callType == CallTypeNone)
+    if (callType == CallType::None)
         return;
 
     const AtomicString& namespaceURI = attributeName.namespaceURI();

@@ -216,10 +216,7 @@ unsigned sizeOfVarargs(CallFrame* callFrame, JSValue arguments, uint32_t firstVa
         return 0;
     default:
         ASSERT(arguments.isObject());
-        if (isJSArray(cell))
-            length = jsCast<JSArray*>(cell)->length();
-        else
-            length = jsCast<JSObject*>(cell)->get(callFrame, callFrame->propertyNames().length).toUInt32(callFrame);
+        length = getLength(callFrame, jsCast<JSObject*>(cell));
         break;
     }
     
@@ -908,7 +905,7 @@ JSValue Interpreter::execute(ProgramExecutable* program, CallFrame* callFrame, J
                     return jsUndefined();
                 CallData callData;
                 CallType callType = getCallData(function, callData);
-                if (callType == CallTypeNone)
+                if (callType == CallType::None)
                     return callFrame->vm().throwException(callFrame, createNotAFunctionError(callFrame, function));
                 MarkedArgumentBuffer jsonArg;
                 jsonArg.append(JSONPValue);
@@ -985,7 +982,7 @@ JSValue Interpreter::executeCall(CallFrame* callFrame, JSObject* function, CallT
     if (vm.isCollectorBusy())
         return jsNull();
 
-    bool isJSCall = (callType == CallTypeJS);
+    bool isJSCall = (callType == CallType::JS);
     JSScope* scope = nullptr;
     CodeBlock* newCodeBlock;
     size_t argsCount = 1 + args.size(); // implicit "this" parameter
@@ -996,7 +993,7 @@ JSValue Interpreter::executeCall(CallFrame* callFrame, JSObject* function, CallT
         scope = callData.js.scope;
         globalObject = scope->globalObject();
     } else {
-        ASSERT(callType == CallTypeHost);
+        ASSERT(callType == CallType::Host);
         globalObject = function->globalObject();
     }
 
@@ -1055,7 +1052,7 @@ JSObject* Interpreter::executeConstruct(CallFrame* callFrame, JSObject* construc
     if (vm.isCollectorBusy())
         return checkedReturn(throwStackOverflowError(callFrame));
 
-    bool isJSConstruct = (constructType == ConstructTypeJS);
+    bool isJSConstruct = (constructType == ConstructType::JS);
     JSScope* scope = nullptr;
     CodeBlock* newCodeBlock;
     size_t argsCount = 1 + args.size(); // implicit "this" parameter
@@ -1066,7 +1063,7 @@ JSObject* Interpreter::executeConstruct(CallFrame* callFrame, JSObject* construc
         scope = constructData.js.scope;
         globalObject = scope->globalObject();
     } else {
-        ASSERT(constructType == ConstructTypeHost);
+        ASSERT(constructType == ConstructType::Host);
         globalObject = constructor->globalObject();
     }
 

@@ -1436,7 +1436,7 @@ static ALWAYS_INLINE JSValue callDefaultValueFunction(ExecState* exec, const JSO
     JSValue function = object->get(exec, propertyName);
     CallData callData;
     CallType callType = getCallData(function, callData);
-    if (callType == CallTypeNone)
+    if (callType == CallType::None)
         return exec->exception();
 
     // Prevent "toString" and "valueOf" from observing execution if an exception
@@ -1507,7 +1507,7 @@ bool JSObject::hasInstance(ExecState* exec, JSValue value, JSValue hasInstanceVa
     if (!hasInstanceValue.isUndefinedOrNull() && hasInstanceValue != exec->lexicalGlobalObject()->functionProtoHasInstanceSymbolFunction()) {
         CallData callData;
         CallType callType = JSC::getCallData(hasInstanceValue, callData);
-        if (callType == CallTypeNone) {
+        if (callType == CallType::None) {
             vm.throwException(exec, createInvalidInstanceofParameterErrorhasInstanceValueNotFunction(exec, this));
             return false;
         }
@@ -3045,7 +3045,7 @@ JSValue JSObject::getMethod(ExecState* exec, CallData& callData, CallType& callT
     }
 
     callType = method.asCell()->methodTable()->getCallData(method.asCell(), callData);
-    if (callType == CallTypeNone) {
+    if (callType == CallType::None) {
         throwVMTypeError(exec, errorMessage);
         return jsUndefined();
     }
