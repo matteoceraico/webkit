@@ -1,3 +1,9 @@
+2016-03-05  Ryosuke Niwa  <rniwa@webkit.org>
+
+        Fix the bindings test after r197611.
+
+        * bindings/scripts/test/TestObj.idl:
+
 2016-03-04  Ryosuke Niwa  <rniwa@webkit.org>
 
         Add basic support for attributeChanged lifecycle callback
