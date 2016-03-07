@@ -307,7 +307,7 @@ JSDOMWindow* toJSDOMWindow(JSValue value)
             return jsCast<JSDOMWindow*>(object);
         if (classInfo == JSDOMWindowShell::info())
             return jsCast<JSDOMWindowShell*>(object)->window();
-        value = object->prototype();
+        value = object->getPrototypeDirect();
     }
     return 0;
 }
