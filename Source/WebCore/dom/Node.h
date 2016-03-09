@@ -302,7 +302,7 @@ public:
     ContainerNode* parentInComposedTree() const;
     Element* parentOrShadowHostElement() const;
     void setParentNode(ContainerNode*);
-    Node* highestAncestor() const;
+    Node* rootNode() const;
 
     // Use when it's guaranteed to that shadowHost is null.
     ContainerNode* parentNodeGuaranteedHostFree() const;

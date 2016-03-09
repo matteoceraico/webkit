@@ -2425,7 +2425,7 @@ static bool isAutomaticTextReplacementType(TextCheckingType type)
 
 static void correctSpellcheckingPreservingTextCheckingParagraph(TextCheckingParagraph& paragraph, PassRefPtr<Range> rangeToReplace, const String& replacement, int resultLocation, int resultLength)
 {
-    ContainerNode* scope = downcast<ContainerNode>(highestAncestor(&paragraph.paragraphRange()->startContainer()));
+    ContainerNode* scope = downcast<ContainerNode>(paragraph.paragraphRange()->startContainer().rootNode());
 
     size_t paragraphLocation;
     size_t paragraphLength;

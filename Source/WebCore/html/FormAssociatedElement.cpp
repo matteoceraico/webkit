@@ -85,6 +85,17 @@ void FormAssociatedElement::insertedInto(ContainerNode& insertionPoint)
         resetFormAttributeTargetObserver();
 }
 
+// Compute the highest ancestor instead of calling Node::rootNode in removedFrom / formRemovedFromTree
+// since inDocument flag on some form associated elements may not have been updated yet.
+static Node* computeRootNode(Node& node)
+{
+    Node* current = &node;
+    Node* parent = current;
+    while ((current = current->parentNode()))
+        parent = current;
+    return parent;
+}
+
 void FormAssociatedElement::removedFrom(ContainerNode& insertionPoint)
 {
     HTMLElement& element = asHTMLElement();
@@ -92,7 +103,7 @@ void FormAssociatedElement::removedFrom(ContainerNode& insertionPoint)
         m_formAttributeTargetObserver = nullptr;
     // If the form and element are both in the same tree, preserve the connection to the form.
     // Otherwise, null out our form and remove ourselves from the form's list of elements.
-    if (m_form && element.highestAncestor() != m_form->highestAncestor())
+    if (m_form && computeRootNode(element) != computeRootNode(*m_form))
         setForm(nullptr);
 }
 
@@ -120,7 +131,7 @@ HTMLFormElement* FormAssociatedElement::findAssociatedForm(const HTMLElement* el
 void FormAssociatedElement::formRemovedFromTree(const Node* formRoot)
 {
     ASSERT(m_form);
-    if (asHTMLElement().highestAncestor() != formRoot)
+    if (computeRootNode(asHTMLElement()) != formRoot)
         setForm(nullptr);
 }
 

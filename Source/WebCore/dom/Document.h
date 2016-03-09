@@ -340,6 +340,7 @@ public:
 
     using ContainerNode::ref;
     using ContainerNode::deref;
+    using TreeScope::rootNode;
 
     virtual bool canContainRangeEndPoint() const override final { return true; }
 
