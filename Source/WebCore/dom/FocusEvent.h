@@ -58,7 +58,9 @@ private:
     FocusEvent(const AtomicString& type, bool canBubble, bool cancelable, AbstractView*, int, RefPtr<EventTarget>&&);
     FocusEvent(const AtomicString& type, const FocusEventInit&);
 
-    virtual bool isFocusEvent() const override;
+    bool relatedTargetScoped() const override;
+
+    bool isFocusEvent() const override;
 
     RefPtr<EventTarget> m_relatedTarget;
 };
