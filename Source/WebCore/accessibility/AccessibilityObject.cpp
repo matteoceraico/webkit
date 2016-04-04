@@ -1249,7 +1249,7 @@ static String listMarkerTextForNode(Node* node)
 }
 
 // Returns the text associated with a list marker if this node is contained within a list item.
-String AccessibilityObject::listMarkerTextForNodeAndPosition(Node* node, const VisiblePosition& visiblePositionStart) const
+String AccessibilityObject::listMarkerTextForNodeAndPosition(Node* node, const VisiblePosition& visiblePositionStart)
 {
     // If the range does not contain the start of the line, the list marker text should not be included.
     if (!isStartOfLine(visiblePositionStart))
@@ -1287,7 +1287,7 @@ String AccessibilityObject::stringForRange(RefPtr<Range> range) const
     return builder.toString();
 }
 
-String AccessibilityObject::stringForVisiblePositionRange(const VisiblePositionRange& visiblePositionRange) const
+String AccessibilityObject::stringForVisiblePositionRange(const VisiblePositionRange& visiblePositionRange)
 {
     if (visiblePositionRange.isNull())
         return String();
