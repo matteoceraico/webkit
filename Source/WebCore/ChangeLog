@@ -1,3 +1,60 @@
+2016-07-07  Ryosuke Niwa  <rniwa@webkit.org>
+
+        Replace scoped flag in Event by composed flag
+        https://bugs.webkit.org/show_bug.cgi?id=158415
+
+        Reviewed by Chris Dumez.
+
+        Replace `scoped` flag with `composed` flag and negate its meaning per the latest spec:
+        https://dom.spec.whatwg.org/#dom-event-composed
+        https://github.com/w3c/webcomponents/issues/513
+
+        In the old spec, every event was assumed to be "composed" (crosses shadow boundaries)
+        by default and there was `scoped` flag which prevented the event from crossing bondaries,
+        and there was a handful of events for which `scoped` was set true when dispatched by UA.
+
+        In the new spec, every event is assumed to be "scoped" and a handful of user-initiated
+        events set `composed` flag to true, which is also exposed in EventInit dictionary.
+        `relatedTargetScoped` flag has been removed. New behavior is identical to when this flag
+        was set to true.
+
+        No new tests since existing tests are updated to test the new flag and behavior.
+
+        * dom/CompositionEvent.cpp:
+        (WebCore::CompositionEvent::isCompositionEvent): Added.
+        * dom/CompositionEvent.h:
+        * dom/Event.cpp:
+        (WebCore::Event::Event): Initialize m_composed. Also re-ordered m_type and m_isInitialized
+        for better packing.
+        (WebCore::Event::composed): Renamed from Event::composed. We return true whenever composed
+        is set to true in EventInit, or the engine is dispatching an user-initiated event listed in:
+        https://github.com/w3c/webcomponents/issues/513#issuecomment-224183937
+        as well as keypress, cut, paste, and, copy as discussed in:
+        https://github.com/w3c/webcomponents/issues/513#issuecomment-230988170
+        (WebCore::Event::isCompositionEvent): Added.
+        * dom/Event.h:
+        (WebCore::Event::composed): Added.
+        (WebCore::Event::scoped): Deleted.
+        (WebCore::Event::relatedTargetScoped): Deleted.
+        (WebCore::Event): Reordered m_type and m_isInitialized for better packing. Added m_composed
+        and removed m_scoped and m_relatedTargetScoped.
+        * dom/Event.idl:
+        * dom/EventPath.cpp:
+        (WebCore::shouldEventCrossShadowBoundary): Returns true if the event did not originate from
+        a shadow tree (this event entered the current shadow tree via a slot so we need to proceed with
+        the normal bubble path outside the shadow tree) or composed flag is set true.
+        (WebCore::EventPath::EventPath): m_event no longer exists, which was only used to get the value
+        of relatedTargetScoped which has been removed.
+        (WebCore::EventPath::setRelatedTarget): Behave as if relatedTargetScoped is always set true
+        since the flag has been removed.
+        * dom/EventPath.h:
+        * dom/FocusEvent.cpp:
+        (WebCore::FocusEvent::relatedTargetScoped): Deleted.
+        * dom/FocusEvent.h:
+        * dom/MouseEvent.cpp:
+        (WebCore::MouseEvent::relatedTargetScoped): Deleted.
+        * dom/MouseEvent.h:
+
 2016-05-09  Ryosuke Niwa  <rniwa@webkit.org>
 
         REGRESSION (198056): Unable to use edit buttons on WordPress
