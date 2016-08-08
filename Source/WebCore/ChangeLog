@@ -1,3 +1,30 @@
+2016-08-08  Chris Dumez  <cdumez@apple.com>
+
+        It should be possible to re-initialize an Event after it's been dispatched
+        https://bugs.webkit.org/show_bug.cgi?id=160651
+
+        Reviewed by Darin Adler.
+
+        Allow re-initialization of an Event that's already been dispatched, as
+        per the latest DOM specification:
+        - https://dom.spec.whatwg.org/#dom-event-initevent
+
+        Firefox already follows the specification here.
+
+        No new tests, rebaselined existing test.
+
+        Test: fast/events/initEvent-after-dispatch.html
+
+        * dom/Event.cpp:
+        (WebCore::Event::initEvent):
+        - Replace dispatched() check with isBeingDispatched() in order to
+          allow initialization of an already dispatched event but prevent
+          initialization of an event that is currently being dispatched
+          as per:
+          https://dom.spec.whatwg.org/#dom-event-initevent (step 1)
+        - Reset target to null as per:
+          https://dom.spec.whatwg.org/#concept-event-initialize (step 4)
+
 2016-07-12  Ryosuke Niwa  <rniwa@webkit.org>
 
         REGRESSION(r202953): Clicking on input[type=file] doesn't open a file picker
