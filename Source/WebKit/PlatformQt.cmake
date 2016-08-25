@@ -8,6 +8,14 @@ macro(generate_header _file _var _content)
     set_source_files_properties(${_file} PROPERTIES GENERATED TRUE)
 endmacro()
 
+if (QT_COMPILE_DEFINITIONS)
+    separate_arguments(QT_COMPILE_DEFINITIONS)
+    foreach (QT_COMPILE_DEFINITION ${QT_COMPILE_DEFINITIONS})
+        add_definitions( -D${QT_COMPILE_DEFINITION} )
+        message(STATUS "Qt definition added: ${QT_COMPILE_DEFINITION}")
+    endforeach ()
+endif ()
+
 list(APPEND WebKit_INCLUDE_DIRECTORIES
     "${WEBCORE_DIR}"
     "${DERIVED_SOURCES_DIR}"
