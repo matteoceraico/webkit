@@ -125,7 +125,7 @@ static bool hasNonEmptyBox(RenderBoxModelObject* renderer)
     return false;
 }
 
-bool HTMLAnchorElement::isKeyboardFocusable(KeyboardEvent* event) const
+bool HTMLAnchorElement::isKeyboardFocusable(KeyboardEvent& event) const
 {
     if (!isLink())
         return HTMLElement::isKeyboardFocusable(event);
@@ -136,7 +136,7 @@ bool HTMLAnchorElement::isKeyboardFocusable(KeyboardEvent* event) const
     if (!document().frame())
         return false;
 
-    if (!document().frame()->eventHandler().tabsToLinks(event))
+    if (!document().frame()->eventHandler().tabsToLinks(&event))
         return false;
 
     if (!renderer() && ancestorsOfType<HTMLCanvasElement>(*this).first())
@@ -145,14 +145,14 @@ bool HTMLAnchorElement::isKeyboardFocusable(KeyboardEvent* event) const
     return hasNonEmptyBox(renderBoxModelObject());
 }
 
-static void appendServerMapMousePosition(StringBuilder& url, Event* event)
+static void appendServerMapMousePosition(StringBuilder& url, Event& event)
 {
     ASSERT(event);
-    if (!is<MouseEvent>(*event))
+    if (!is<MouseEvent>(event))
         return;
 
     ASSERT(event->target());
-    Node* target = event->target()->toNode();
+    Node* target = event.target()->toNode();
     ASSERT(target);
     if (!is<HTMLImageElement>(*target))
         return;
@@ -166,7 +166,7 @@ static void appendServerMapMousePosition(StringBuilder& url, Event* event)
     auto& renderer = downcast<RenderImage>(*imageElement.renderer());
 
     // FIXME: This should probably pass true for useTransforms.
-    FloatPoint absolutePosition = renderer.absoluteToLocal(FloatPoint(downcast<MouseEvent>(*event).pageX(), downcast<MouseEvent>(*event).pageY()));
+    FloatPoint absolutePosition = renderer.absoluteToLocal(FloatPoint(downcast<MouseEvent>(event).pageX(), downcast<MouseEvent>(event).pageY()));
     int x = absolutePosition.x();
     int y = absolutePosition.y();
     url.append('?');
@@ -175,16 +175,16 @@ static void appendServerMapMousePosition(StringBuilder& url, Event* event)
     url.appendNumber(y);
 }
 
-void HTMLAnchorElement::defaultEventHandler(Event* event)
+void HTMLAnchorElement::defaultEventHandler(Event& event)
 {
     if (isLink()) {
         if (focused() && isEnterKeyKeydownEvent(event) && treatLinkAsLiveForEventType(NonMouseEvent)) {
-            event->setDefaultHandled();
-            dispatchSimulatedClick(event);
+            event.setDefaultHandled();
+            dispatchSimulatedClick(&event);
             return;
         }
 
-        if (MouseEvent::canTriggerActivationBehavior(*event) && treatLinkAsLiveForEventType(eventType(event))) {
+        if (MouseEvent::canTriggerActivationBehavior(event) && treatLinkAsLiveForEventType(eventType(event))) {
             handleClick(event);
             return;
         }
@@ -192,10 +192,10 @@ void HTMLAnchorElement::defaultEventHandler(Event* event)
         if (hasEditableStyle()) {
             // This keeps track of the editable block that the selection was in (if it was in one) just before the link was clicked
             // for the LiveWhenNotFocused editable link behavior
-            if (event->type() == eventNames().mousedownEvent && is<MouseEvent>(*event) && downcast<MouseEvent>(*event).button() != RightButton && document().frame()) {
+            if (event.type() == eventNames().mousedownEvent && is<MouseEvent>(event) && downcast<MouseEvent>(event).button() != RightButton && document().frame()) {
                 setRootEditableElementForSelectionOnMouseDown(document().frame()->selection().selection().rootEditableElement());
-                m_wasShiftKeyDownOnMouseDown = downcast<MouseEvent>(*event).shiftKey();
-            } else if (event->type() == eventNames().mouseoverEvent) {
+                m_wasShiftKeyDownOnMouseDown = downcast<MouseEvent>(event).shiftKey();
+            } else if (event.type() == eventNames().mouseoverEvent) {
                 // These are cleared on mouseover and not mouseout because their values are needed for drag events,
                 // but drag events happen after mouse out events.
                 clearRootEditableElementForSelectionOnMouseDown();
@@ -524,9 +524,9 @@ void HTMLAnchorElement::sendPings(const URL& destinationURL)
         PingLoader::sendPing(*document().frame(), document().completeURL(pingURLs[i]), destinationURL);
 }
 
-void HTMLAnchorElement::handleClick(Event* event)
+void HTMLAnchorElement::handleClick(Event& event)
 {
-    event->setDefaultHandled();
+    event.setDefaultHandled();
 
     Frame* frame = document().frame();
     if (!frame)
@@ -553,17 +553,16 @@ void HTMLAnchorElement::handleClick(Event* event)
     } else
 #endif
 
-    frame->loader().urlSelected(kurl, target(), event, LockHistory::No, LockBackForwardList::No, hasRel(RelationNoReferrer) ? NeverSendReferrer : MaybeSendReferrer, document().shouldOpenExternalURLsPolicyToPropagate());
+    frame->loader().urlSelected(kurl, target(), &event, LockHistory::No, LockBackForwardList::No, hasRel(RelationNoReferrer) ? NeverSendReferrer : MaybeSendReferrer, document().shouldOpenExternalURLsPolicyToPropagate());
 
     sendPings(kurl);
 }
 
-HTMLAnchorElement::EventType HTMLAnchorElement::eventType(Event* event)
+HTMLAnchorElement::EventType HTMLAnchorElement::eventType(Event& event)
 {
-    ASSERT(event);
-    if (!is<MouseEvent>(*event))
+    if (!is<MouseEvent>(event))
         return NonMouseEvent;
-    return downcast<MouseEvent>(*event).shiftKey() ? MouseEventWithShiftKey : MouseEventWithoutShiftKey;
+    return downcast<MouseEvent>(event).shiftKey() ? MouseEventWithShiftKey : MouseEventWithoutShiftKey;
 }
 
 bool HTMLAnchorElement::treatLinkAsLiveForEventType(EventType eventType) const
@@ -596,9 +595,9 @@ bool HTMLAnchorElement::treatLinkAsLiveForEventType(EventType eventType) const
     return false;
 }
 
-bool isEnterKeyKeydownEvent(Event* event)
+bool isEnterKeyKeydownEvent(Event& event)
 {
-    return event->type() == eventNames().keydownEvent && is<KeyboardEvent>(*event) && downcast<KeyboardEvent>(*event).keyIdentifier() == "Enter";
+    return event.type() == eventNames().keydownEvent && is<KeyboardEvent>(event) && downcast<KeyboardEvent>(event).keyIdentifier() == "Enter";
 }
 
 bool shouldProhibitLinks(Element* element)

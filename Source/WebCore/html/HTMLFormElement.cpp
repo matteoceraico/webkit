@@ -171,7 +171,7 @@ HTMLElement* HTMLFormElement::item(unsigned index)
     return elements()->item(index);
 }
 
-void HTMLFormElement::submitImplicitly(Event* event, bool fromImplicitSubmissionTrigger)
+void HTMLFormElement::submitImplicitly(Event& event, bool fromImplicitSubmissionTrigger)
 {
     unsigned submissionTriggerCount = 0;
     for (auto& formAssociatedElement : m_associatedElements) {
@@ -180,7 +180,7 @@ void HTMLFormElement::submitImplicitly(Event* event, bool fromImplicitSubmission
         HTMLFormControlElement& formElement = downcast<HTMLFormControlElement>(*formAssociatedElement);
         if (formElement.isSuccessfulSubmitButton()) {
             if (formElement.renderer()) {
-                formElement.dispatchSimulatedClick(event);
+                formElement.dispatchSimulatedClick(&event);
                 return;
             }
         } else if (formElement.canTriggerImplicitSubmission())
@@ -196,18 +196,17 @@ void HTMLFormElement::submitImplicitly(Event* event, bool fromImplicitSubmission
         prepareForSubmission(event);
 }
 
-static inline HTMLFormControlElement* submitElementFromEvent(const Event* event)
+static inline HTMLFormControlElement* submitElementFromEvent(const Event& event)
 {
-    for (Node* node = event->target()->toNode(); node; node = node->parentNode()) {
+    for (Node* node = event.target()->toNode(); node; node = node->parentNode()) {
         if (is<HTMLFormControlElement>(*node))
             return downcast<HTMLFormControlElement>(node);
     }
     return nullptr;
 }
 
-bool HTMLFormElement::validateInteractively(Event* event)
+bool HTMLFormElement::validateInteractively(Event& event)
 {
-    ASSERT(event);
     if (!document().page() || !document().page()->settings().interactiveFormValidationEnabled() || noValidate())
         return true;
 
@@ -259,7 +258,7 @@ bool HTMLFormElement::validateInteractively(Event* event)
     return false;
 }
 
-void HTMLFormElement::prepareForSubmission(Event* event)
+void HTMLFormElement::prepareForSubmission(Event& event)
 {
     Frame* frame = document().frame();
     if (m_isSubmittingOrPreparingForSubmission || !frame)
@@ -287,7 +286,7 @@ void HTMLFormElement::prepareForSubmission(Event* event)
     m_isSubmittingOrPreparingForSubmission = false;
 
     if (m_shouldSubmit)
-        submit(event, true, true, NotSubmittedByJavaScript);
+        submit(&event, true, true, NotSubmittedByJavaScript);
 }
 
 void HTMLFormElement::submit()

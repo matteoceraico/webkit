@@ -58,7 +58,7 @@ private:
     bool rendererIsNeeded(const RenderStyle&) override;
     RenderPtr<RenderElement> createElementRenderer(Ref<RenderStyle>&&, const RenderTreePosition&) override;
     
-    void defaultEventHandler(Event*) override;
+    void defaultEventHandler(Event&) override;
 
     bool willRecalcStyle(Style::Change) override;
 

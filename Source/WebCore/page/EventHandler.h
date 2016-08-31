@@ -204,7 +204,7 @@ public:
     WEBCORE_EXPORT bool handleMouseReleaseEvent(const PlatformMouseEvent&);
     bool handleMouseForceEvent(const PlatformMouseEvent&);
     WEBCORE_EXPORT bool handleWheelEvent(const PlatformWheelEvent&);
-    void defaultWheelEventHandler(Node*, WheelEvent*);
+    void defaultWheelEventHandler(Node*, WheelEvent&);
     bool handlePasteGlobalSelection(const PlatformMouseEvent&);
 
     void platformPrepareForWheelEvents(const PlatformWheelEvent&, const HitTestResult&, RefPtr<Element>& eventTarget, RefPtr<ContainerNode>& scrollableContainer, ScrollableArea*&, bool& isOverWidget);
@@ -269,13 +269,13 @@ public:
     static unsigned accessKeyModifiers();
     WEBCORE_EXPORT bool handleAccessKey(const PlatformKeyboardEvent&);
     WEBCORE_EXPORT bool keyEvent(const PlatformKeyboardEvent&);
-    void defaultKeyboardEventHandler(KeyboardEvent*);
+    void defaultKeyboardEventHandler(KeyboardEvent&);
 
     bool accessibilityPreventsEventPropogation(KeyboardEvent&);
-    WEBCORE_EXPORT void handleKeyboardSelectionMovementForAccessibility(KeyboardEvent*);
+    WEBCORE_EXPORT void handleKeyboardSelectionMovementForAccessibility(KeyboardEvent&);
 
     bool handleTextInputEvent(const String& text, Event* underlyingEvent = nullptr, TextEventInputType = TextEventInputKeyboard);
-    void defaultTextInputEventHandler(TextEvent*);
+    void defaultTextInputEventHandler(TextEvent&);
 
 #if ENABLE(DRAG_SUPPORT)
     WEBCORE_EXPORT bool eventMayStartDrag(const PlatformMouseEvent&) const;
@@ -439,10 +439,10 @@ private:
     bool passMouseDownEventToWidget(Widget*);
     bool passWheelEventToWidget(const PlatformWheelEvent&, Widget&);
 
-    void defaultSpaceEventHandler(KeyboardEvent*);
-    void defaultBackspaceEventHandler(KeyboardEvent*);
-    void defaultTabEventHandler(KeyboardEvent*);
-    void defaultArrowEventHandler(FocusDirection, KeyboardEvent*);
+    void defaultSpaceEventHandler(KeyboardEvent&);
+    void defaultBackspaceEventHandler(KeyboardEvent&);
+    void defaultTabEventHandler(KeyboardEvent&);
+    void defaultArrowEventHandler(FocusDirection, KeyboardEvent&);
 
 #if ENABLE(DRAG_SUPPORT)
     DragSourceAction updateDragSourceActionsAllowed() const;

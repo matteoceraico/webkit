@@ -53,7 +53,7 @@ private:
 
     void parseAttribute(const QualifiedName&, const AtomicString&) override;
     bool isPresentationAttribute(const QualifiedName&) const override;
-    void defaultEventHandler(Event*) override;
+    void defaultEventHandler(Event&) override;
 
     bool appendFormData(FormDataList&, bool) override;
 

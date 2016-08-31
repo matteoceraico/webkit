@@ -49,11 +49,11 @@ private:
     RenderPtr<RenderElement> createElementRenderer(Ref<RenderStyle>&&, const RenderTreePosition&) override;
     bool childShouldCreateRenderer(const Node&) const override;
 
-    void defaultEventHandler(Event*) override;
+    void defaultEventHandler(Event&) override;
     
     bool supportsFocus() const override;
     bool isMouseFocusable() const override;
-    bool isKeyboardFocusable(KeyboardEvent*) const override;
+    bool isKeyboardFocusable(KeyboardEvent&) const override;
     bool isFocusable() const override;
     bool isURLAttribute(const Attribute&) const override;
     bool canStartSelection() const override;

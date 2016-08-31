@@ -123,7 +123,7 @@ private:
     void prepareForDocumentSuspension() final;
     void resumeFromDocumentSuspension() final;
 
-    void defaultEventHandler(Event*) final;
+    void defaultEventHandler(Event&) final;
     void dispatchPendingMouseClick() final;
 
     void updateSnapshot(PassRefPtr<Image>) final;

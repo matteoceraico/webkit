@@ -71,7 +71,7 @@ TextFieldInputType::~TextFieldInputType()
         m_innerSpinButton->removeSpinButtonOwner();
 }
 
-bool TextFieldInputType::isKeyboardFocusable(KeyboardEvent*) const
+bool TextFieldInputType::isKeyboardFocusable(KeyboardEvent&) const
 {
 #if PLATFORM(IOS)
     if (element().isReadOnly())
@@ -154,47 +154,47 @@ void TextFieldInputType::setValue(const String& sanitizedValue, bool valueChange
         input->setTextAsOfLastFormControlChangeEvent(sanitizedValue);
 }
 
-void TextFieldInputType::handleKeydownEvent(KeyboardEvent* event)
+void TextFieldInputType::handleKeydownEvent(KeyboardEvent& event)
 {
     if (!element().focused())
         return;
     Frame* frame = element().document().frame();
-    if (!frame || !frame->editor().doTextFieldCommandFromEvent(&element(), event))
+    if (!frame || !frame->editor().doTextFieldCommandFromEvent(&element(), &event))
         return;
-    event->setDefaultHandled();
+    event.setDefaultHandled();
 }
 
-void TextFieldInputType::handleKeydownEventForSpinButton(KeyboardEvent* event)
+void TextFieldInputType::handleKeydownEventForSpinButton(KeyboardEvent& event)
 {
     if (element().isDisabledOrReadOnly())
         return;
-    const String& key = event->keyIdentifier();
+    const String& key = event.keyIdentifier();
     if (key == "Up")
         spinButtonStepUp();
     else if (key == "Down")
         spinButtonStepDown();
     else
         return;
-    event->setDefaultHandled();
+    event.setDefaultHandled();
 }
 
-void TextFieldInputType::forwardEvent(Event* event)
+void TextFieldInputType::forwardEvent(Event& event)
 {
     if (m_innerSpinButton) {
         m_innerSpinButton->forwardEvent(event);
-        if (event->defaultHandled())
+        if (event.defaultHandled())
             return;
     }
 
-    if (event->isMouseEvent()
-        || event->type() == eventNames().blurEvent
-        || event->type() == eventNames().focusEvent)
+    if (event.isMouseEvent()
+        || event.type() == eventNames().blurEvent
+        || event.type() == eventNames().focusEvent)
     {
         element().document().updateStyleIfNeeded();
 
         if (element().renderer()) {
             RenderTextControlSingleLine& renderTextControl = downcast<RenderTextControlSingleLine>(*element().renderer());
-            if (event->type() == eventNames().blurEvent) {
+            if (event.type() == eventNames().blurEvent) {
                 if (RenderTextControlInnerBlock* innerTextRenderer = innerTextElement()->renderer()) {
                     if (RenderLayer* innerLayer = innerTextRenderer->layer()) {
                         ScrollOffset scrollOffset(!renderTextControl.style().isLeftToRightDirection() ? innerLayer->scrollWidth() : 0, 0);
@@ -203,7 +203,7 @@ void TextFieldInputType::forwardEvent(Event* event)
                 }
 
                 capsLockStateMayHaveChanged();
-            } else if (event->type() == eventNames().focusEvent)
+            } else if (event.type() == eventNames().focusEvent)
                 capsLockStateMayHaveChanged();
 
             element().forwardEvent(event);
@@ -224,9 +224,9 @@ void TextFieldInputType::handleBlurEvent()
     element().endEditing();
 }
 
-bool TextFieldInputType::shouldSubmitImplicitly(Event* event)
+bool TextFieldInputType::shouldSubmitImplicitly(Event& event)
 {
-    return (event->type() == eventNames().textInputEvent && is<TextEvent>(*event) && downcast<TextEvent>(*event).data() == "\n")
+    return (event.type() == eventNames().textInputEvent && is<TextEvent>(event) && downcast<TextEvent>(event).data() == "\n")
         || InputType::shouldSubmitImplicitly(event);
 }
 
@@ -433,7 +433,7 @@ String TextFieldInputType::sanitizeValue(const String& proposedValue) const
     return limitLength(proposedValue.removeCharacters(isASCIILineBreak), HTMLInputElement::maximumLength);
 }
 
-void TextFieldInputType::handleBeforeTextInsertedEvent(BeforeTextInsertedEvent* event)
+void TextFieldInputType::handleBeforeTextInsertedEvent(BeforeTextInsertedEvent& event)
 {
     // Make sure that the text to be inserted will not violate the maxLength.
 
@@ -464,7 +464,7 @@ void TextFieldInputType::handleBeforeTextInsertedEvent(BeforeTextInsertedEvent* 
     unsigned appendableLength = maxLength > baseLength ? maxLength - baseLength : 0;
 
     // Truncate the inserted text to avoid violating the maxLength and other constraints.
-    String eventText = event->text();
+    String eventText = event.text();
     unsigned textLength = eventText.length();
     while (textLength > 0 && isASCIILineBreak(eventText[textLength - 1]))
         textLength--;
@@ -473,7 +473,7 @@ void TextFieldInputType::handleBeforeTextInsertedEvent(BeforeTextInsertedEvent* 
     eventText.replace('\r', ' ');
     eventText.replace('\n', ' ');
 
-    event->setText(limitLength(eventText, appendableLength));
+    event.setText(limitLength(eventText, appendableLength));
 }
 
 bool TextFieldInputType::shouldRespectListAttribute()

@@ -47,7 +47,7 @@ private:
     void finishParsingChildren() override;
     void childrenChanged(const ChildChange&) override;
     void attributeChanged(const QualifiedName&, const AtomicString& oldValue, const AtomicString& newValue, AttributeModificationReason = ModifiedDirectly) override;
-    void defaultEventHandler(Event*) override;
+    void defaultEventHandler(Event&) override;
     bool willRespondToMouseClickEvents() override;
 
     void toggle();

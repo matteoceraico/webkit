@@ -46,7 +46,7 @@ public:
     virtual ~HTMLTextFormControlElement();
 
     void didEditInnerTextValue();
-    void forwardEvent(Event*);
+    void forwardEvent(Event&);
 
     InsertionNotificationRequest insertedInto(ContainerNode&) override;
 

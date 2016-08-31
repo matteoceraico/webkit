@@ -98,7 +98,7 @@ private:
 
     bool isURLAttribute(const Attribute&) const override;
 
-    void defaultEventHandler(Event*) override;
+    void defaultEventHandler(Event&) override;
     void handleClick(Event&);
 
     HTMLLinkElement(const QualifiedName&, Document&, bool createdByParser);

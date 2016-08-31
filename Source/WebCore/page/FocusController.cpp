@@ -190,12 +190,12 @@ static inline bool hasCustomFocusLogic(Element& element)
 
 static inline bool isNonFocusableShadowHost(Element& element, KeyboardEvent& event)
 {
-    return !element.isKeyboardFocusable(&event) && element.shadowRoot() && !hasCustomFocusLogic(element);
+    return !element.isKeyboardFocusable(event) && element.shadowRoot() && !hasCustomFocusLogic(element);
 }
 
 static inline bool isFocusableShadowHost(Node& node, KeyboardEvent& event)
 {
-    return is<Element>(node) && downcast<Element>(node).isKeyboardFocusable(&event) && downcast<Element>(node).shadowRoot() && !hasCustomFocusLogic(downcast<Element>(node));
+    return is<Element>(node) && downcast<Element>(node).isKeyboardFocusable(event) && downcast<Element>(node).shadowRoot() && !hasCustomFocusLogic(downcast<Element>(node));
 }
 
 static inline int adjustedTabIndex(Node& node, KeyboardEvent& event)
@@ -207,7 +207,7 @@ static inline int adjustedTabIndex(Node& node, KeyboardEvent& event)
 
 static inline bool shouldVisit(Element& element, KeyboardEvent& event)
 {
-    return element.isKeyboardFocusable(&event) || isNonFocusableShadowHost(element, event);
+    return element.isKeyboardFocusable(event) || isNonFocusableShadowHost(element, event);
 }
 
 FocusController::FocusController(Page& page, ViewState::Flags viewState)
@@ -362,7 +362,7 @@ bool FocusController::advanceFocusInDocumentOrder(FocusDirection direction, Keyb
         return true;
     }
 
-    if (is<HTMLFrameOwnerElement>(*element) && (!is<HTMLPlugInElement>(*element) || !element->isKeyboardFocusable(event))) {
+    if (is<HTMLFrameOwnerElement>(*element) && (!is<HTMLPlugInElement>(*element) || !element->isKeyboardFocusable(*event))) {
         // We focus frames rather than frame owners.
         // FIXME: We should not focus frames that have no scrollbars, as focusing them isn't useful to the user.
         HTMLFrameOwnerElement& owner = downcast<HTMLFrameOwnerElement>(*element);
@@ -819,7 +819,7 @@ void FocusController::findFocusCandidateInContainer(Node& container, const Layou
         if (element == focusedNode)
             continue;
 
-        if (!element->isKeyboardFocusable(event) && !element->isFrameOwnerElement() && !canScrollInDirection(element, direction))
+        if (!element->isKeyboardFocusable(*event) && !element->isFrameOwnerElement() && !canScrollInDirection(element, direction))
             continue;
 
         FocusCandidate candidate = FocusCandidate(element, direction);

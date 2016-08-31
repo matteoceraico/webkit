@@ -120,7 +120,7 @@ protected:
 private:
     const AtomicString& formControlType() const override;
     
-    bool isKeyboardFocusable(KeyboardEvent*) const override;
+    bool isKeyboardFocusable(KeyboardEvent&) const override;
     bool isMouseFocusable() const override;
 
     void dispatchFocusEvent(RefPtr<Element>&& oldFocusedElement, FocusDirection) final;
@@ -145,7 +145,7 @@ private:
 
     void reset() override;
 
-    void defaultEventHandler(Event*) override;
+    void defaultEventHandler(Event&) override;
 
     void dispatchChangeEventForMenuList();
 
@@ -175,9 +175,9 @@ private:
     void parseMultipleAttribute(const AtomicString&);
     int lastSelectedListIndex() const;
     void updateSelectedState(int listIndex, bool multi, bool shift);
-    void menuListDefaultEventHandler(Event*);
+    void menuListDefaultEventHandler(Event&);
     bool platformHandleKeydownEvent(KeyboardEvent*);
-    void listBoxDefaultEventHandler(Event*);
+    void listBoxDefaultEventHandler(Event&);
     void setOptionsChangedOnRenderer();
     size_t searchOptionsForValue(const String&, size_t listIndexStart, size_t listIndexEnd) const;
 

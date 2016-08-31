@@ -1,3 +1,258 @@
+2016-08-31  Andreas Kling  <akling@apple.com>
+
+        DOM event handling should pass Event around by reference.
+        <https://webkit.org/b/161398>
+
+        Reviewed by Chris Dumez.
+
+        Start with making Node::defaultEventHandler() take an Event& instead of an Event*,
+        and then spread out from there, propagating the referenceness.
+
+        * dom/Element.cpp:
+        (WebCore::Element::isKeyboardFocusable):
+        * dom/Element.h:
+        * dom/EventDispatcher.cpp:
+        (WebCore::callDefaultEventHandlersInTheBubblingOrder):
+        * dom/Node.cpp:
+        (WebCore::Node::dispatchDOMActivateEvent):
+        (WebCore::Node::defaultEventHandler):
+        * dom/Node.h:
+        * editing/Editor.cpp:
+        (WebCore::Editor::handleKeyboardEvent):
+        (WebCore::Editor::handleInputMethodKeydown):
+        (WebCore::Editor::handleTextEvent):
+        * editing/Editor.h:
+        * html/BaseCheckableInputType.cpp:
+        (WebCore::BaseCheckableInputType::handleKeydownEvent):
+        (WebCore::BaseCheckableInputType::handleKeypressEvent):
+        * html/BaseCheckableInputType.h:
+        * html/BaseChooserOnlyDateAndTimeInputType.cpp:
+        (WebCore::BaseChooserOnlyDateAndTimeInputType::handleDOMActivateEvent):
+        (WebCore::BaseChooserOnlyDateAndTimeInputType::handleKeydownEvent):
+        (WebCore::BaseChooserOnlyDateAndTimeInputType::handleKeypressEvent):
+        (WebCore::BaseChooserOnlyDateAndTimeInputType::handleKeyupEvent):
+        * html/BaseChooserOnlyDateAndTimeInputType.h:
+        * html/BaseClickableWithKeyInputType.cpp:
+        (WebCore::BaseClickableWithKeyInputType::handleKeydownEvent):
+        (WebCore::BaseClickableWithKeyInputType::handleKeypressEvent):
+        (WebCore::BaseClickableWithKeyInputType::handleKeyupEvent):
+        * html/BaseClickableWithKeyInputType.h:
+        * html/BaseDateAndTimeInputType.cpp:
+        (WebCore::BaseDateAndTimeInputType::isKeyboardFocusable):
+        * html/BaseDateAndTimeInputType.h:
+        * html/CheckboxInputType.cpp:
+        (WebCore::CheckboxInputType::handleKeyupEvent):
+        * html/CheckboxInputType.h:
+        * html/ColorInputType.cpp:
+        (WebCore::ColorInputType::handleDOMActivateEvent):
+        * html/ColorInputType.h:
+        * html/FileInputType.cpp:
+        (WebCore::FileInputType::handleDOMActivateEvent):
+        * html/FileInputType.h:
+        * html/HTMLAnchorElement.cpp:
+        (WebCore::HTMLAnchorElement::isKeyboardFocusable):
+        (WebCore::HTMLAnchorElement::defaultEventHandler):
+        (WebCore::HTMLAnchorElement::handleClick):
+        (WebCore::HTMLAnchorElement::eventType):
+        (WebCore::isEnterKeyKeydownEvent):
+        * html/HTMLAnchorElement.h:
+        * html/HTMLAreaElement.cpp:
+        (WebCore::HTMLAreaElement::isKeyboardFocusable):
+        * html/HTMLAreaElement.h:
+        * html/HTMLButtonElement.cpp:
+        (WebCore::HTMLButtonElement::defaultEventHandler):
+        * html/HTMLButtonElement.h:
+        * html/HTMLFormControlElement.cpp:
+        (WebCore::HTMLFormControlElement::isKeyboardFocusable):
+        * html/HTMLFormControlElement.h:
+        * html/HTMLFormElement.cpp:
+        (WebCore::HTMLFormElement::submitImplicitly):
+        (WebCore::submitElementFromEvent):
+        (WebCore::HTMLFormElement::validateInteractively):
+        (WebCore::HTMLFormElement::prepareForSubmission):
+        * html/HTMLFormElement.h:
+        * html/HTMLFrameOwnerElement.cpp:
+        (WebCore::HTMLFrameOwnerElement::isKeyboardFocusable):
+        * html/HTMLFrameOwnerElement.h:
+        * html/HTMLFrameSetElement.cpp:
+        (WebCore::HTMLFrameSetElement::defaultEventHandler):
+        * html/HTMLFrameSetElement.h:
+        * html/HTMLIFrameElement.h:
+        * html/HTMLInputElement.cpp:
+        (WebCore::HTMLInputElement::isKeyboardFocusable):
+        (WebCore::HTMLInputElement::isTextFormControlKeyboardFocusable):
+        (WebCore::HTMLInputElement::willDispatchEvent):
+        (WebCore::HTMLInputElement::defaultEventHandler):
+        * html/HTMLInputElement.h:
+        * html/HTMLLabelElement.cpp:
+        (WebCore::HTMLLabelElement::defaultEventHandler):
+        * html/HTMLLabelElement.h:
+        * html/HTMLLinkElement.cpp:
+        (WebCore::HTMLLinkElement::defaultEventHandler):
+        * html/HTMLLinkElement.h:
+        * html/HTMLPlugInElement.cpp:
+        (WebCore::HTMLPlugInElement::defaultEventHandler):
+        (WebCore::HTMLPlugInElement::isKeyboardFocusable):
+        * html/HTMLPlugInElement.h:
+        * html/HTMLPlugInImageElement.cpp:
+        (WebCore::HTMLPlugInImageElement::defaultEventHandler):
+        * html/HTMLPlugInImageElement.h:
+        * html/HTMLSelectElement.cpp:
+        (WebCore::HTMLSelectElement::isKeyboardFocusable):
+        (WebCore::HTMLSelectElement::menuListDefaultEventHandler):
+        (WebCore::HTMLSelectElement::listBoxDefaultEventHandler):
+        (WebCore::HTMLSelectElement::defaultEventHandler):
+        * html/HTMLSelectElement.h:
+        * html/HTMLSummaryElement.cpp:
+        (WebCore::HTMLSummaryElement::defaultEventHandler):
+        * html/HTMLSummaryElement.h:
+        * html/HTMLTextAreaElement.cpp:
+        (WebCore::HTMLTextAreaElement::isKeyboardFocusable):
+        (WebCore::HTMLTextAreaElement::defaultEventHandler):
+        (WebCore::HTMLTextAreaElement::handleBeforeTextInsertedEvent):
+        * html/HTMLTextAreaElement.h:
+        * html/HTMLTextFormControlElement.cpp:
+        (WebCore::HTMLTextFormControlElement::forwardEvent):
+        * html/HTMLTextFormControlElement.h:
+        * html/ImageInputType.cpp:
+        (WebCore::ImageInputType::handleDOMActivateEvent):
+        * html/ImageInputType.h:
+        * html/InputType.cpp:
+        (WebCore::InputType::handleClickEvent):
+        (WebCore::InputType::handleMouseDownEvent):
+        (WebCore::InputType::handleDOMActivateEvent):
+        (WebCore::InputType::handleKeydownEvent):
+        (WebCore::InputType::handleKeypressEvent):
+        (WebCore::InputType::handleKeyupEvent):
+        (WebCore::InputType::handleBeforeTextInsertedEvent):
+        (WebCore::InputType::handleTouchEvent):
+        (WebCore::InputType::forwardEvent):
+        (WebCore::InputType::shouldSubmitImplicitly):
+        (WebCore::InputType::dispatchSimulatedClickIfActive):
+        (WebCore::InputType::isKeyboardFocusable):
+        * html/InputType.h:
+        * html/MediaDocument.cpp:
+        (WebCore::MediaDocument::defaultEventHandler):
+        * html/MediaDocument.h:
+        * html/NumberInputType.cpp:
+        (WebCore::NumberInputType::handleKeydownEvent):
+        * html/NumberInputType.h:
+        * html/RadioInputType.cpp:
+        (WebCore::RadioInputType::handleClickEvent):
+        (WebCore::RadioInputType::handleKeydownEvent):
+        (WebCore::RadioInputType::handleKeyupEvent):
+        (WebCore::RadioInputType::isKeyboardFocusable):
+        * html/RadioInputType.h:
+        * html/RangeInputType.cpp:
+        (WebCore::RangeInputType::handleMouseDownEvent):
+        (WebCore::RangeInputType::handleTouchEvent):
+        (WebCore::RangeInputType::handleKeydownEvent):
+        * html/RangeInputType.h:
+        * html/ResetInputType.cpp:
+        (WebCore::ResetInputType::handleDOMActivateEvent):
+        * html/ResetInputType.h:
+        * html/SearchInputType.cpp:
+        (WebCore::SearchInputType::handleKeydownEvent):
+        * html/SearchInputType.h:
+        * html/SubmitInputType.cpp:
+        (WebCore::SubmitInputType::handleDOMActivateEvent):
+        * html/SubmitInputType.h:
+        * html/TextFieldInputType.cpp:
+        (WebCore::TextFieldInputType::isKeyboardFocusable):
+        (WebCore::TextFieldInputType::handleKeydownEvent):
+        (WebCore::TextFieldInputType::handleKeydownEventForSpinButton):
+        (WebCore::TextFieldInputType::forwardEvent):
+        (WebCore::TextFieldInputType::shouldSubmitImplicitly):
+        (WebCore::TextFieldInputType::handleBeforeTextInsertedEvent):
+        * html/TextFieldInputType.h:
+        * html/shadow/AutoFillButtonElement.cpp:
+        (WebCore::AutoFillButtonElement::defaultEventHandler):
+        * html/shadow/AutoFillButtonElement.h:
+        * html/shadow/MediaControlElementTypes.cpp:
+        (WebCore::MediaControlMuteButtonElement::defaultEventHandler):
+        (WebCore::MediaControlSeekButtonElement::defaultEventHandler):
+        (WebCore::MediaControlVolumeSliderElement::defaultEventHandler):
+        * html/shadow/MediaControlElementTypes.h:
+        * html/shadow/MediaControlElements.cpp:
+        (WebCore::MediaControlPanelElement::defaultEventHandler):
+        (WebCore::MediaControlVolumeSliderContainerElement::defaultEventHandler):
+        (WebCore::MediaControlPanelMuteButtonElement::defaultEventHandler):
+        (WebCore::MediaControlPlayButtonElement::defaultEventHandler):
+        (WebCore::MediaControlOverlayPlayButtonElement::defaultEventHandler):
+        (WebCore::MediaControlRewindButtonElement::defaultEventHandler):
+        (WebCore::MediaControlReturnToRealtimeButtonElement::defaultEventHandler):
+        (WebCore::MediaControlToggleClosedCaptionsButtonElement::defaultEventHandler):
+        (WebCore::MediaControlClosedCaptionsTrackListElement::defaultEventHandler):
+        (WebCore::MediaControlTimelineElement::defaultEventHandler):
+        (WebCore::MediaControlFullscreenButtonElement::defaultEventHandler):
+        (WebCore::MediaControlFullscreenVolumeMinButtonElement::defaultEventHandler):
+        (WebCore::MediaControlFullscreenVolumeMaxButtonElement::defaultEventHandler):
+        * html/shadow/MediaControlElements.h:
+        * html/shadow/MediaControls.cpp:
+        (WebCore::MediaControls::defaultEventHandler):
+        (WebCore::MediaControls::containsRelatedTarget):
+        * html/shadow/MediaControls.h:
+        * html/shadow/MediaControlsApple.cpp:
+        (WebCore::MediaControlsApple::defaultEventHandler):
+        (WebCore::MediaControlsApple::handleClickEvent):
+        (WebCore::MediaControlsAppleEventListener::handleEvent):
+        * html/shadow/MediaControlsApple.h:
+        * html/shadow/SliderThumbElement.cpp:
+        (WebCore::SliderThumbElement::defaultEventHandler):
+        (WebCore::SliderThumbElement::handleTouchStart):
+        (WebCore::SliderThumbElement::handleTouchMove):
+        (WebCore::SliderThumbElement::handleTouchEndAndCancel):
+        (WebCore::SliderThumbElement::handleTouchEvent):
+        * html/shadow/SliderThumbElement.h:
+        * html/shadow/SpinButtonElement.cpp:
+        (WebCore::SpinButtonElement::defaultEventHandler):
+        (WebCore::SpinButtonElement::forwardEvent):
+        * html/shadow/SpinButtonElement.h:
+        * html/shadow/TextControlInnerElements.cpp:
+        (WebCore::TextControlInnerTextElement::defaultEventHandler):
+        (WebCore::SearchFieldResultsButtonElement::defaultEventHandler):
+        (WebCore::SearchFieldCancelButtonElement::defaultEventHandler):
+        * html/shadow/TextControlInnerElements.h:
+        * html/shadow/mac/ImageControlsButtonElementMac.cpp:
+        (WebCore::ImageControlsButtonElementMac::defaultEventHandler):
+        * html/shadow/mac/ImageControlsButtonElementMac.h:
+        * loader/FrameLoader.cpp:
+        (WebCore::FrameLoader::dispatchBeforeUnloadEvent):
+        * mathml/MathMLElement.cpp:
+        (WebCore::MathMLElement::defaultEventHandler):
+        (WebCore::MathMLElement::isKeyboardFocusable):
+        * mathml/MathMLElement.h:
+        * mathml/MathMLSelectElement.cpp:
+        (WebCore::MathMLSelectElement::defaultEventHandler):
+        * mathml/MathMLSelectElement.h:
+        * page/EventHandler.cpp:
+        (WebCore::didScrollInScrollableArea):
+        (WebCore::handleWheelEventInAppropriateEnclosingBox):
+        (WebCore::EventHandler::defaultWheelEventHandler):
+        (WebCore::EventHandler::keyEvent):
+        (WebCore::handleKeyboardSelectionMovement):
+        (WebCore::EventHandler::handleKeyboardSelectionMovementForAccessibility):
+        (WebCore::EventHandler::defaultKeyboardEventHandler):
+        (WebCore::EventHandler::defaultTextInputEventHandler):
+        (WebCore::EventHandler::defaultSpaceEventHandler):
+        (WebCore::EventHandler::defaultBackspaceEventHandler):
+        (WebCore::EventHandler::defaultArrowEventHandler):
+        (WebCore::EventHandler::defaultTabEventHandler):
+        * page/EventHandler.h:
+        * page/FocusController.cpp:
+        (WebCore::isFocusableElementOrScopeOwner):
+        (WebCore::isNonFocusableScopeOwner):
+        (WebCore::isFocusableScopeOwner):
+        (WebCore::FocusController::advanceFocusInDocumentOrder):
+        (WebCore::FocusController::findFocusCandidateInContainer):
+        * rendering/RenderFrameSet.cpp:
+        (WebCore::RenderFrameSet::userResize):
+        * rendering/RenderFrameSet.h:
+        * svg/SVGAElement.cpp:
+        (WebCore::SVGAElement::defaultEventHandler):
+        (WebCore::SVGAElement::isKeyboardFocusable):
+        * svg/SVGAElement.h:
+
 2016-08-08  Chris Dumez  <cdumez@apple.com>
 
         It should be possible to re-initialize an Event after it's been dispatched

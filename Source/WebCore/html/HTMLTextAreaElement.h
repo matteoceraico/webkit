@@ -70,7 +70,7 @@ private:
     void didAddUserAgentShadowRoot(ShadowRoot*) override;
     bool canHaveUserAgentShadowRoot() const final { return true; }
 
-    void handleBeforeTextInsertedEvent(BeforeTextInsertedEvent*) const;
+    void handleBeforeTextInsertedEvent(BeforeTextInsertedEvent&) const;
     static String sanitizeUserInputValue(const String&, unsigned maxLength);
     void updateValue() const;
     void setNonDirtyValue(const String&);
@@ -84,7 +84,7 @@ private:
     bool isOptionalFormControl() const override { return !isRequiredFormControl(); }
     bool isRequiredFormControl() const override { return isRequired(); }
 
-    void defaultEventHandler(Event*) override;
+    void defaultEventHandler(Event&) override;
     
     void subtreeHasChanged() override;
 
@@ -107,7 +107,7 @@ private:
     void reset() override;
     bool hasCustomFocusLogic() const override;
     bool isMouseFocusable() const override;
-    bool isKeyboardFocusable(KeyboardEvent*) const override;
+    bool isKeyboardFocusable(KeyboardEvent&) const override;
     void updateFocusAppearance(SelectionRestorationMode, SelectionRevealMode) override;
 
     void accessKeyAction(bool sendMouseEvents) override;

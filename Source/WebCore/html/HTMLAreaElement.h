@@ -54,7 +54,7 @@ private:
     void parseAttribute(const QualifiedName&, const AtomicString&) override;
     bool supportsFocus() const override;
     String target() const override;
-    bool isKeyboardFocusable(KeyboardEvent*) const override;
+    bool isKeyboardFocusable(KeyboardEvent&) const override;
     bool isMouseFocusable() const override;
     bool isFocusable() const override;
     void updateFocusAppearance(SelectionRestorationMode, SelectionRevealMode) override;
