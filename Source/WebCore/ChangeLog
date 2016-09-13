@@ -1,3 +1,31 @@
+2016-09-13  Tim Horton  <timothy_horton@apple.com>
+
+        Undoing a candidate insertion results in the replaced text being selected
+        https://bugs.webkit.org/show_bug.cgi?id=161894
+        <rdar://problem/28225774>
+
+        Reviewed by Simon Fraser.
+
+        Test: editing/mac/spelling/accept-candidate-undo-does-not-select.html
+
+        * WebCore.xcodeproj/project.pbxproj:
+        * editing/ReplaceRangeWithTextCommand.cpp: Added.
+        (WebCore::ReplaceRangeWithTextCommand::ReplaceRangeWithTextCommand):
+        (WebCore::ReplaceRangeWithTextCommand::doApply):
+        * editing/ReplaceRangeWithTextCommand.h: Added.
+        (WebCore::ReplaceRangeWithTextCommand::create):
+        Add a editor command that replaces a range with the given text.
+
+        * editing/Editor.cpp:
+        (WebCore::Editor::rangeForTextCheckingResult):
+        (WebCore::Editor::handleAcceptedCandidate):
+        (WebCore::Editor::selectTextCheckingResult): Deleted.
+        * editing/Editor.h:
+        Make use of the new editor command to do candidate insertion as a single
+        composite operation, so that it is undone as a unit. Otherwise, undo ends up
+        undoing the insertion, but not the selection, and we are left with the old
+        text, selected, which is undesirable.
+
 2016-10-07  Wenson Hsieh  <wenson_hsieh@apple.com>
 
         Support onbeforeinput event handling for the new InputEvent spec
