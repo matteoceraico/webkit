@@ -145,6 +145,7 @@ public:
     virtual bool isMouseEvent() const;
     virtual bool isFocusEvent() const;
     virtual bool isKeyboardEvent() const;
+    virtual bool isInputEvent() const;
     virtual bool isCompositionEvent() const;
     virtual bool isTouchEvent() const;
 

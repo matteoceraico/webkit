@@ -100,6 +100,7 @@ public:
 #endif
         bool m_allowsInlineMediaPlayback;
         bool m_inlineMediaPlaybackRequiresPlaysInlineAttribute;
+        bool m_inputEventsEnabled;
     };
 
     static Ref<InternalSettings> create(Page* page)

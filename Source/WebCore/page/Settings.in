@@ -255,3 +255,6 @@ httpEquivEnabled initial=true
 # enforces all frame sandbox flags (see enum SandboxFlag in SecurityContext.h), and also disables <meta http-equiv>
 # processing and subframe loading.
 contentDispositionAttachmentSandboxEnabled initial=false
+
+# Runtime-enabled features
+inputEventsEnabled initial=false

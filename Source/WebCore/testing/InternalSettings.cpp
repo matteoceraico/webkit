@@ -103,6 +103,7 @@ InternalSettings::Backup::Backup(Settings& settings)
 #endif
     , m_allowsInlineMediaPlayback(settings.allowsInlineMediaPlayback())
     , m_inlineMediaPlaybackRequiresPlaysInlineAttribute(settings.inlineMediaPlaybackRequiresPlaysInlineAttribute())
+    , m_inputEventsEnabled(settings.inputEventsEnabled())
 {
 }
 
@@ -170,6 +171,7 @@ void InternalSettings::Backup::restoreTo(Settings& settings)
     settings.setAllowsInlineMediaPlayback(m_allowsInlineMediaPlayback);
     settings.setInlineMediaPlaybackRequiresPlaysInlineAttribute(m_inlineMediaPlaybackRequiresPlaysInlineAttribute);
     RuntimeEnabledFeatures::sharedFeatures().setPluginReplacementEnabled(m_pluginReplacementEnabled);
+    settings.setInputEventsEnabled(m_inputEventsEnabled);
 }
 
 class InternalSettingsWrapper : public Supplement<Page> {

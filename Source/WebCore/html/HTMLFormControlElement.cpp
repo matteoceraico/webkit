@@ -324,7 +324,7 @@ void HTMLFormControlElement::dispatchFormControlChangeEvent()
 void HTMLFormControlElement::dispatchFormControlInputEvent()
 {
     setChangedSinceLastFormControlChangeEvent(true);
-    HTMLElement::dispatchInputEvent();
+    HTMLElement::dispatchInputEvent(emptyString());
 }
 
 bool HTMLFormControlElement::isDisabledFormControl() const

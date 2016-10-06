@@ -103,7 +103,8 @@ bool Event::composed() const
         || isFocusEvent()
         || isKeyboardEvent()
         || isMouseEvent()
-        || isTouchEvent();
+        || isTouchEvent()
+        || isInputEvent();
 }
 
 EventInterface Event::eventInterface() const
@@ -127,6 +128,11 @@ bool Event::isFocusEvent() const
 }
 
 bool Event::isKeyboardEvent() const
+{
+    return false;
+}
+
+bool Event::isInputEvent() const
 {
     return false;
 }

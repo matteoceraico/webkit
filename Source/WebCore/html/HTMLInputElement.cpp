@@ -974,7 +974,7 @@ void HTMLInputElement::setEditingValue(const String& value)
     else
         cacheSelectionInResponseToSetValue(max);
 
-    dispatchInputEvent();
+    dispatchInputEvent(emptyString());
 }
 
 void HTMLInputElement::setValue(const String& value, ExceptionCode& ec, TextFieldEventBehavior eventBehavior)
@@ -1054,7 +1054,7 @@ void HTMLInputElement::setValueFromRenderer(const String& value)
 
     // Input event is fired by the Node::defaultEventHandler for editable controls.
     if (!isTextField())
-        dispatchInputEvent();
+        dispatchInputEvent(emptyString());
 
     updateValidity();
 

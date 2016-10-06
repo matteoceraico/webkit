@@ -260,6 +260,17 @@
 #define FOR_EACH_WEBKIT_DEBUG_UINT32_PREFERENCE(macro) \
     macro(VisibleDebugOverlayRegions, visibleDebugOverlayRegions, UInt32, uint32_t, 0)
 
+// For experimental features:
+// - The type should be boolean.
+// - You must provide the last two parameters for all experimental features. They
+//   are the text exposed to the user from the WebKit client.
+// - They should be alphabetically ordered by the human readable text.
+// - They should be false by default, although they are currently set to true while we develop client UI.
+
+#define FOR_EACH_WEBKIT_EXPERIMENTAL_FEATURE_PREFERENCE(macro) \
+    macro(InputEventsEnabled, inputEventsEnabled, Bool, bool, true, "Input Events", "Enable InputEvents support") \
+    \
+
 #if PLATFORM(COCOA)
 
 #if PLATFORM(IOS)
