@@ -262,6 +262,7 @@ HTMLElement::EventHandlerNameMap HTMLElement::createEventHandlerNameMap()
         &onautocompleteerrorAttr,
         &onbeforecopyAttr,
         &onbeforecutAttr,
+        &onbeforeinputAttr,
         &onbeforeloadAttr,
         &onbeforepasteAttr,
         &onblurAttr,

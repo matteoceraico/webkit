@@ -64,6 +64,7 @@ namespace WebCore {
     macro(autocompleteerror) \
     macro(beforecopy) \
     macro(beforecut) \
+    macro(beforeinput) \
     macro(beforeload) \
     macro(beforepaste) \
     macro(beforeunload) \
