@@ -555,7 +555,7 @@ public:
 
     bool dispatchBeforeLoadEvent(const String& sourceURL);
 
-    virtual void dispatchInputEvent(const AtomicString& inputType);
+    virtual void dispatchInputEvent(const String& inputType);
 
     // Perform the default action for an event.
     virtual void defaultEventHandler(Event&);

@@ -75,8 +75,38 @@ private:
     const String& m_text;
 };
 
+static inline EditAction editActionForTypingCommand(TypingCommand::ETypingCommand command, TextGranularity granularity)
+{
+    switch (command) {
+    case TypingCommand::DeleteSelection:
+        return EditActionTypingDeleteSelection;
+    case TypingCommand::DeleteKey: {
+        if (granularity == WordGranularity)
+            return EditActionTypingDeleteWordBackward;
+        if (granularity == LineBoundary)
+            return EditActionTypingDeleteLineBackward;
+        return EditActionTypingDeleteBackward;
+    }
+    case TypingCommand::ForwardDeleteKey:
+        if (granularity == WordGranularity)
+            return EditActionTypingDeleteWordForward;
+        if (granularity == LineBoundary)
+            return EditActionTypingDeleteLineForward;
+        return EditActionTypingDeleteForward;
+    case TypingCommand::InsertText:
+        return EditActionTypingInsertText;
+    case TypingCommand::InsertLineBreak:
+        return EditActionTypingInsertLineBreak;
+    case TypingCommand::InsertParagraphSeparator:
+    case TypingCommand::InsertParagraphSeparatorInQuotedContent:
+        return EditActionTypingInsertParagraph;
+    default:
+        return EditActionUnspecified;
+    }
+}
+
 TypingCommand::TypingCommand(Document& document, ETypingCommand commandType, const String &textToInsert, Options options, TextGranularity granularity, TextCompositionType compositionType)
-    : TextInsertionBaseCommand(document, EditActionTyping)
+    : TextInsertionBaseCommand(document, editActionForTypingCommand(commandType, granularity))
     , m_commandType(commandType)
     , m_textToInsert(textToInsert)
     , m_openForMoreTyping(true)
@@ -89,6 +119,7 @@ TypingCommand::TypingCommand(Document& document, ETypingCommand commandType, con
     , m_shouldRetainAutocorrectionIndicator(options & RetainAutocorrectionIndicator)
     , m_shouldPreventSpellChecking(options & PreventSpellChecking)
 {
+    m_currentTypingEditAction = editingAction();
     updatePreservesTypingStyle(m_commandType);
 }
 
@@ -305,6 +336,11 @@ void TypingCommand::doApply()
     ASSERT_NOT_REACHED();
 }
 
+String TypingCommand::inputEventTypeName() const
+{
+    return inputTypeNameForEditingAction(m_currentTypingEditAction);
+}
+
 void TypingCommand::didApplyCommand()
 {
     // TypingCommands handle applied editing separately (see TypingCommand::typingAddedToOpenCommand).
@@ -365,13 +401,14 @@ void TypingCommand::markMisspellingsAfterTyping(ETypingCommand commandType)
     }
 }
 
-bool TypingCommand::willAddTypingToOpenCommand(ETypingCommand, TextGranularity)
+bool TypingCommand::willAddTypingToOpenCommand(ETypingCommand commandType, TextGranularity granularity)
 {
     if (m_isHandlingInitialTypingCommand)
         return true;
 
     // FIXME: Use the newly added typing command and granularity to ensure that an InputEvent with the
     // correct inputType is dispatched.
+    m_currentTypingEditAction = editActionForTypingCommand(commandType, granularity);
     return frame().editor().willApplyEditing(*this);
 }
 
@@ -418,7 +455,7 @@ void TypingCommand::insertTextRunWithoutNewlines(const String &text, bool select
         return;
 
     RefPtr<InsertTextCommand> command = InsertTextCommand::create(document(), text, selectInsertedText,
-        m_compositionType == TextCompositionNone ? InsertTextCommand::RebalanceLeadingAndTrailingWhitespaces : InsertTextCommand::RebalanceAllWhitespaces, EditActionTyping);
+        m_compositionType == TextCompositionNone ? InsertTextCommand::RebalanceLeadingAndTrailingWhitespaces : InsertTextCommand::RebalanceAllWhitespaces, EditActionTypingInsertText);
 
     applyCommandToComposite(command, endingSelection());
 
@@ -453,7 +490,7 @@ void TypingCommand::insertParagraphSeparator()
     if (!willAddTypingToOpenCommand(InsertParagraphSeparator, ParagraphGranularity))
         return;
 
-    applyCommandToComposite(InsertParagraphSeparatorCommand::create(document(), false, false, EditActionTyping));
+    applyCommandToComposite(InsertParagraphSeparatorCommand::create(document(), false, false, EditActionTypingInsertParagraph));
     typingAddedToOpenCommand(InsertParagraphSeparator);
 }
 
