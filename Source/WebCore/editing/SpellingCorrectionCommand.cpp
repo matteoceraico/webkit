@@ -113,6 +113,14 @@ void SpellingCorrectionCommand::doApply()
     applyCommandToComposite(ReplaceSelectionCommand::create(document(), fragment.release(), ReplaceSelectionCommand::MatchStyle, EditActionPaste));
 }
 
+String SpellingCorrectionCommand::inputEventData() const
+{
+    if (isEditingTextAreaOrTextInput())
+        return m_correction;
+
+    return CompositeEditCommand::inputEventData();
+}
+
 bool SpellingCorrectionCommand::shouldRetainAutocorrectionIndicator() const
 {
     return true;
