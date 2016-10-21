@@ -157,7 +157,12 @@ void PageConsoleClient::addMessage(MessageSource source, MessageLevel level, con
 void PageConsoleClient::messageWithTypeAndLevel(MessageType type, MessageLevel level, JSC::ExecState* exec, RefPtr<Inspector::ScriptArguments>&& arguments)
 {
     String messageText;
-    bool gotMessage = arguments->getFirstArgumentAsString(messageText);
+    bool gotMessage = arguments->argumentCount() > 0;
+    for (unsigned i = 0; i < arguments->argumentCount(); ++i) {
+        messageText.append(arguments->argumentAt(i).toString(arguments->globalState()));
+        if (i < arguments->argumentCount() - 1)
+            messageText.append(' ');
+    }
 
     auto message = std::make_unique<Inspector::ConsoleMessage>(MessageSource::ConsoleAPI, type, level, messageText, arguments.copyRef(), exec);
 
