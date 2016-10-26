@@ -204,12 +204,12 @@ void QWebFrameAdapter::handleGestureEvent(QGestureEventFacade* gestureEvent)
 }
 #endif
 
-QVariant QWebFrameAdapter::evaluateJavaScript(const QString &scriptSource)
+QVariant QWebFrameAdapter::evaluateJavaScript(const QString &scriptSource, const QUrl &location)
 {
     ScriptController& scriptController = frame->script();
     QVariant rc;
     int distance = 0;
-    Deprecated::ScriptValue value = scriptController.executeScript(ScriptSourceCode(scriptSource));
+    Deprecated::ScriptValue value = scriptController.executeScript(ScriptSourceCode(scriptSource, location));
     JSC::ExecState* exec = scriptController.globalObject(mainThreadNormalWorld())->globalExec();
     JSValueRef* ignoredException = 0;
     exec->vm().apiLock().lock();

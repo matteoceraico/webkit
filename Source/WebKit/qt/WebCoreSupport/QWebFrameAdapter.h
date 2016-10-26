@@ -158,7 +158,8 @@ public:
 #endif
     QWebFrameAdapter* createFrame(QWebFrameData*);
 
-    QVariant evaluateJavaScript(const QString& scriptSource);
+    //QVariant evaluateJavaScript(const QString& scriptSource);
+    QVariant evaluateJavaScript(const QString& scriptSource, const QUrl& location);
     void addToJavaScriptWindowObject(const QString& name, QObject*, ValueOwnership);
 
     QString toHtml() const;
