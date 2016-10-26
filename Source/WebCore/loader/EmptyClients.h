@@ -104,7 +104,8 @@ public:
 
     virtual void setResizable(bool) override { }
 
-    virtual void addMessageToConsole(MessageSource, MessageLevel, const String&, unsigned, unsigned, const String&) override { }
+    //virtual void addMessageToConsole(MessageSource, MessageLevel, const String&, unsigned, unsigned, const String&) override { }
+    virtual void addMessageToConsole(MessageSource, MessageLevel, const String&, unsigned, unsigned, const String&, const String&) override { }
 
     virtual bool canRunBeforeUnloadConfirmPanel() override { return false; }
     virtual bool runBeforeUnloadConfirmPanel(const String&, Frame*) override { return true; }

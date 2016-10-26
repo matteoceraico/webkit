@@ -344,12 +344,12 @@ static inline QWebPageAdapter::MessageLevel convertLevel(MessageLevel level)
     return QWebPageAdapter::LogMessageLevel;
 }
 
-void ChromeClientQt::addMessageToConsole(MessageSource source, MessageLevel level, const String& message, unsigned lineNumber, unsigned columnNumber, const String& sourceID)
+void ChromeClientQt::addMessageToConsole(MessageSource source, MessageLevel level, const String& message, unsigned lineNumber, unsigned columnNumber, const String& sourceID, const String& stack)
 {
     QString x = message;
     QString y = sourceID;
     UNUSED_PARAM(columnNumber);
-    m_webPage->consoleMessageReceived(convertSource(source), convertLevel(level), x, lineNumber, y);
+    m_webPage->consoleMessageReceived(convertSource(source), convertLevel(level), x, lineNumber, y, stack);
 }
 
 void ChromeClientQt::chromeDestroyed()
