@@ -99,8 +99,8 @@ public:
     bool menubarVisible() final;
 
     void setResizable(bool) final;
-
-    void addMessageToConsole(MessageSource, MessageLevel, const String& message, unsigned lineNumber, unsigned columnNumber, const String& sourceID) final;
+    
+    void addMessageToConsole(MessageSource, MessageLevel, const String& message, unsigned lineNumber, unsigned columnNumber, const String& sourceID, const String& stack) final;
 
     bool canRunBeforeUnloadConfirmPanel() final;
     bool runBeforeUnloadConfirmPanel(const String& message, Frame*) final;

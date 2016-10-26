@@ -464,7 +464,7 @@ Q_SIGNALS:
     void featurePermissionRequestCanceled(QWebFrame* frame, QWebPage::Feature feature);
     void fullScreenRequested(QWebFullScreenRequest fullScreenRequest);
 
-    void consoleMessageReceived(MessageSource source, MessageLevel level, const QString& message, int lineNumber, const QString& sourceID);
+    void consoleMessageReceived(MessageSource source, MessageLevel level, const QString& message, int lineNumber, const QString& sourceID, const QString& stack="");
 
     void recentlyAudibleChanged(bool recentlyAudible);
 
@@ -478,6 +478,7 @@ protected:
     virtual bool javaScriptConfirm(QWebFrame *originatingFrame, const QString& msg);
     virtual bool javaScriptPrompt(QWebFrame *originatingFrame, const QString& msg, const QString& defaultValue, QString* result);
     virtual void javaScriptConsoleMessage(const QString& message, int lineNumber, const QString& sourceID);
+    virtual void javaScriptError(const QString& message, int lineNumber, const QString& sourceID, const QString& stack);
 
     virtual QString userAgentForUrl(const QUrl& url) const;
 
