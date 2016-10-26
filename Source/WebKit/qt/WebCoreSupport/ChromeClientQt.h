@@ -100,7 +100,8 @@ public:
 
     void setResizable(bool) override;
 
-    void addMessageToConsole(MessageSource, MessageLevel, const String& message, unsigned lineNumber, unsigned columnNumber, const String& sourceID) override;
+    //void addMessageToConsole(MessageSource, MessageLevel, const String& message, unsigned lineNumber, unsigned columnNumber, const String& sourceID) override;
+    void addMessageToConsole(MessageSource, MessageLevel, const String& message, unsigned lineNumber, unsigned columnNumber, const String& sourceID, const String& stack) override;
 
     bool canRunBeforeUnloadConfirmPanel() override;
     bool runBeforeUnloadConfirmPanel(const String& message, Frame*) override;

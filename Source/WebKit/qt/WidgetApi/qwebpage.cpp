@@ -259,10 +259,19 @@ QWebPageAdapter *QWebPagePrivate::createWindow(bool dialog)
     return newPage->d;
 }
 
-void QWebPagePrivate::consoleMessageReceived(MessageSource source, MessageLevel level, const QString& message, int lineNumber, const QString& sourceID)
+void QWebPagePrivate::consoleMessageReceived(MessageSource source, MessageLevel level, const QString& message, int lineNumber, const QString& sourceID, const QString& stack)
 {
-    q->javaScriptConsoleMessage(message, lineNumber, sourceID);
+    if (level == QWebPageAdapter::ErrorMessageLevel) {
+        q->javaScriptError(message, lineNumber, sourceID, stack);
+    } else {
+        q->javaScriptConsoleMessage(message, lineNumber, sourceID);
+    }
     emit q->consoleMessageReceived(QWebPage::MessageSource(source), QWebPage::MessageLevel(level), message, lineNumber, sourceID);
+}
+
+void QWebPagePrivate::javaScriptError(const QString& message, int lineNumber, const QString& sourceID, const QString& stack)
+{
+    q->javaScriptError(message, lineNumber, sourceID, stack);
 }
 
 void QWebPagePrivate::javaScriptAlert(QWebFrameAdapter* frame, const QString& msg)
@@ -1578,6 +1587,14 @@ bool QWebPage::javaScriptPrompt(QWebFrame *frame, const QString& msg, const QStr
         *result = dlg.textValue();
 #endif
     return ok;
+}
+
+void QWebPage::javaScriptError(const QString &message, int lineNumber, const QString &sourceID, const QString &stack)
+{
+    Q_UNUSED(message);
+    Q_UNUSED(lineNumber);
+    Q_UNUSED(sourceID);
+    Q_UNUSED(stack);
 }
 
 /*!

@@ -127,7 +127,6 @@ void PageConsoleClient::addMessage(MessageSource source, MessageLevel level, con
         return;
 
     std::unique_ptr<Inspector::ConsoleMessage> message;
-
     if (callStack)
         message = std::make_unique<Inspector::ConsoleMessage>(source, MessageType::Log, level, messageText, WTFMove(callStack), requestIdentifier);
     else
@@ -145,7 +144,12 @@ void PageConsoleClient::addMessage(MessageSource source, MessageLevel level, con
     if (m_page.usesEphemeralSession())
         return;
 
-    m_page.chrome().client().addMessageToConsole(source, level, messageText, lineNumber, columnNumber, url);
+    if (callStack) {
+        String stack = callStack->buildInspectorArray()->toJSONString();
+        m_page.chrome().client().addMessageToConsole(source, level, messageText, lineNumber, columnNumber, url, stack);
+    } else {
+        m_page.chrome().client().addMessageToConsole(source, level, messageText, lineNumber, columnNumber, url);
+    }
 
     if (!m_page.settings().logsPageMessagesToSystemConsoleEnabled() && !shouldPrintExceptions())
         return;
