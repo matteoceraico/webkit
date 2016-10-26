@@ -57,8 +57,10 @@ void ProgressTrackerClientQt::progressStarted(Frame& originatingProgressFrame)
 
     static_cast<FrameLoaderClientQt&>(originatingProgressFrame.loader().client()).originatingLoadStarted();
 
-    if (!originatingProgressFrame.tree().parent())
+    if (!originatingProgressFrame.tree().parent()) {
         m_webPage->updateNavigationActions();
+        progressEstimateChanged(originatingProgressFrame);
+    }
 }
 
 void ProgressTrackerClientQt::progressEstimateChanged(Frame& originatingProgressFrame)
