@@ -592,7 +592,7 @@ DOMWindow& activeDOMWindow(ExecState* exec)
 
 DOMWindow& firstDOMWindow(ExecState* exec)
 {
-    return asJSDOMWindow(exec->vmEntryGlobalObject())->wrapped();
+    return asJSDOMWindow(exec->lexicalGlobalObject())->wrapped();
 }
 
 static inline bool canAccessDocument(JSC::ExecState* state, Document* targetDocument, SecurityReportingOption reportingOption = ReportSecurityError)
