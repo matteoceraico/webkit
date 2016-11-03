@@ -65,6 +65,8 @@ public:
     void emitLoadFinished(bool originatingLoad, bool ok) override;
     QWebFrameAdapter* createChildFrame(QWebFrameData*) override;
 
+    static WebCore::Frame* webcoreFrame(QWebFrame* frame) { return frame->d->frame; };
+
     QWebFrame *q;
     QWebPage *page;
 

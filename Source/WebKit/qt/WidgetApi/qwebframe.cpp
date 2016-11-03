@@ -41,6 +41,8 @@
 #include <qnetworkrequest.h>
 #include <qregion.h>
 
+#include "qwebframe_printingaddons_p.h"
+
 using namespace WebCore;
 
 // from text/qfont.cpp
@@ -824,6 +826,11 @@ bool QWebFrame::event(QEvent *e)
     \sa render()
 */
 void QWebFrame::print(QPrinter *printer) const
+{
+    print(printer, 0);
+}
+
+void QWebFrame::print(QPrinter *printer, PrintCallback *callback) const
 {
 #if HAVE(QTPRINTSUPPORT)
     QPainter painter;
