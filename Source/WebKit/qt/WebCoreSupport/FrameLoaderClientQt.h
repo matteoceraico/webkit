@@ -31,6 +31,7 @@
 #define FrameLoaderClientQt_h
 
 #include "FormState.h"
+#include "Frame.h"
 #include "FrameLoaderClient.h"
 #include "HTMLFormElement.h"
 #include "ResourceResponse.h"
