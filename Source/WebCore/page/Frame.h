@@ -176,6 +176,9 @@ namespace WebCore {
         Settings& settings() const { return *m_settings; }
 
         void setPrinting(bool printing, const FloatSize& pageSize, const FloatSize& originalPageSize, float maximumShrinkRatio, AdjustViewSizeOrNot);
+        void addResetPage(int page);
+        void getPagination(int page, int pages, int &logicalPage, int &logicalPages) const;
+
         bool shouldUsePrintingLayout() const;
         WEBCORE_EXPORT FloatSize resizePageRectsKeepingRatio(const FloatSize& originalSize, const FloatSize& expectedSize);
 
@@ -328,6 +331,8 @@ namespace WebCore {
 
         float m_pageZoomFactor;
         float m_textZoomFactor;
+        
+        Vector<int> m_pageResets;
 
         int m_activeDOMObjectsAndAnimationsSuspendedCount;
         bool m_mainFrameWasDestroyed { false };

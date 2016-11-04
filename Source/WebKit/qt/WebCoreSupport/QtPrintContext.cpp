@@ -55,4 +55,7 @@ void QtPrintContext::spoolPage(int pageNumber, float width)
     m_printContext->spoolPage(*m_graphicsContext, pageNumber, width);
 }
 
-
+WebCore::GraphicsContext& QtPrintContext::graphicsContext() const
+{
+    return *m_graphicsContext;
+}
