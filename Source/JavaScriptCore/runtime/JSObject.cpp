@@ -437,15 +437,16 @@ void JSObject::putInlineSlow(ExecState* exec, PropertyName propertyName, JSValue
             proxy->ProxyObject::put(proxy, exec, propertyName, value, slot);
             return;
         }
-        JSValue prototype = obj->getPrototypeDirect();
+        JSValue prototype = obj->getPrototype(vm, exec);
+        RETURN_IF_EXCEPTION(scope, false);
         if (prototype.isNull())
             break;
         obj = asObject(prototype);
     }
-    
-    ASSERT(!structure(vm)->prototypeChainMayInterceptStoreTo(exec->vm(), propertyName) || obj == this);
-    if (!putDirectInternal<PutModePut>(vm, propertyName, value, 0, slot) && slot.isStrictMode())
-        throwTypeError(exec, ASCIILiteral(StrictModeReadonlyPropertyWriteError));
+
+    if (!putDirectInternal<PutModePut>(vm, propertyName, value, 0, slot))
+        return typeError(exec, scope, slot.isStrictMode(), ASCIILiteral(ReadonlyPropertyWriteError));
+    return true;
 }
 
 void JSObject::putByIndex(JSCell* cell, ExecState* exec, unsigned propertyName, JSValue value, bool shouldThrow)
