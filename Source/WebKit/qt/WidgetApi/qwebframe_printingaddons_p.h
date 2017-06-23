@@ -26,6 +26,7 @@
 #include <qprinter.h>
 #include <qstring.h>
 
+#include "Frame.h"
 #include "GraphicsContext.h"
 #include "PrintContext.h"
 
