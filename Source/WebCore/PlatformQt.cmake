@@ -184,6 +184,12 @@ if (COMPILER_IS_GCC_OR_CLANG)
     )
 endif ()
 
+if (SQLITE_SOURCE_FILE)
+    list(APPEND WebCore_SOURCES
+        "${SQLITE_SOURCE_FILE}"
+    )
+endif ()
+
 if (ENABLE_DEVICE_ORIENTATION)
     list(APPEND WebCore_SOURCES
         platform/qt/DeviceMotionClientQt.cpp
